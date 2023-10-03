@@ -1,6 +1,8 @@
 from django.urls import path
 
-urlpatterns = [
+from api.views.main import MainPageView
 
+urlpatterns = [
+    path("", MainPageView.as_view(), name='index')
 ]
 

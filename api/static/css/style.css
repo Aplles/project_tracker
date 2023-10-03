@@ -1,0 +1,177 @@
+/*Обнуление*/
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+*, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+:focus, :active {
+    outline: none;
+}
+
+a:focus, a:active {
+    outline: none;
+}
+
+nav, footer, header, aside {
+    display: block;
+}
+
+
+html, body {
+    height: 100%;
+    width: 100%;
+    font-size: 100%;
+    line-height: 1;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    -moz-background-size: 100%;
+    -webkit-background-size: 100%;
+    -o-background-size: 100%;
+    background-size: 100%;
+}
+
+input, button, textarea {
+    font-family: inherit;
+}
+
+input::-ms-clear {
+    display: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+a, a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+ul li {
+    list-style: none;
+}
+
+img {
+    vertical-align: top;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+    font-size: inherit;
+    font-weight: inherit;
+    font-family: 'DM Sans', sans-serif;
+}
+
+/*--------------------*/
+
+:root {
+    --dark-blue: #416788;
+}
+
+.header {
+    height: 100vh;
+    background-color: black;
+}
+
+.main-container {
+    width: 1440px;
+    margin: 0 auto;
+}
+
+.header-line {
+    display: flex;
+    align-items: center;
+    align-content: space-between;
+    padding-top: 20px;
+}
+
+.push-right {
+    margin-left: auto;
+}
+
+.btn_custom {
+    border-radius: 15px;
+    height: 43px;
+    padding: 8px 33px 12px 33px;
+    font-size: 20px;
+    color: #FFF;
+    background: rgba(255, 255, 255, 0.20);
+}
+
+.btn_red {
+    background: #EF3124;
+}
+
+.link_header {
+    color: #FFF;
+    font-family: "Dela Gothic One", sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.title {
+    margin-left: 40px;
+    margin-right: 105px;
+}
+
+.create-project {
+    margin-left: 40px;
+}
+
+.header-info {
+    display: flex;
+    width: 50%;
+}
+
+.header-info {
+    margin-top: 200px;
+}
+
+#span {
+    font-family: 'DM Sans', sans-serif;
+    color: #FFF;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.title-header {
+    color: #FFF;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.block-text-header {
+    margin-top: 60px;
+    margin-bottom: 75px;
+}
+
+.text-header {
+    color: #FFF;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 38px;
+}

@@ -10,4 +10,3 @@ logs
 public
 .mypy_cache
 uploads
-static
