@@ -21,6 +21,21 @@
       rel="stylesheet">
 {% endblock %}
 
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sliderContainer = document.querySelector('.slider');
+        const slides = document.querySelectorAll('.slide');
+        slides.forEach((slide, index) => {
+            const clone = slide.cloneNode(true);
+            sliderContainer.appendChild(clone);
+        });
+        sliderContainer.style.animationPlayState = 'running';
+    });
+</script>
+{% endblock %}
+
+
 {% block content %}
 <div class="header">
     <div class="main-container">
@@ -61,12 +76,62 @@
                 </div>
             </div>
             <div class="header-image">
-                Тут фотка
+                <img src="{% static 'img/main.svg' %}" alt="">
             </div>
         </div>
     </div>
 </div>
 <div>
-    <h1>Прив</h1>
+    <div class="main-container">
+        <div class="title-project">
+            <h1 class="title-text">Реализованные проекты</h1>
+        </div>
+    </div>
+    <div class="end-project">
+        <div class="slider-container">
+            <div class="slider" id="slider">
+                {% for project in projects %}
+                <div class="slide">
+                    <div>
+                        <h1>{{ project.name }}</h1>
+                    </div>
+                    <div>
+                        <img class="image-project" src="{{ project.image.url }}" alt="">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="main-container">
+        <div class="title-project">
+            <h1 class="title-text">Наши функции</h1>
+        </div>
+        <div class="func-project">
+            <div class="func-title">
+                <h1>Создание задач</h1>
+            </div>
+            <div class="func-desc">
+                <p>Создавайте и анализируйте задачи для проекта, управляйте ими с помощью интуитивного интерфейса</p>
+            </div>
+            <div class="group-func">
+                <div class="column-func">
+                    <p>Обсуждение комментариев</p>
+                </div>
+                <div class="column-func select-func">
+                    <p>Создание задач</p>
+                </div>
+                <div class="column-func">
+                    <p>Отслеживание времени</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="title-project">
+            <h1 class="title-text">Наши функции</h1>
+        </div>
+    </div>
 </div>
 {% endblock %}
+
+

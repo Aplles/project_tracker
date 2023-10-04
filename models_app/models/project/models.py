@@ -6,6 +6,7 @@ class Project(models.Model):
     """ Модель проекта """
 
     name = models.CharField(max_length=255, verbose_name="Название проекта")
+    image = models.ImageField(upload_to='projects/', verbose_name='Фото проекта')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
 
