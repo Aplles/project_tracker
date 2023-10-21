@@ -33,16 +33,17 @@ ALLOWED_HOSTS = env("ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(
 # Application definition
 
 INSTALLED_APPS = [
-    'api',
-    'models_app.apps.ModelsAppConfig',
-    "rest_framework",
-    'service_objects',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api',
+    'models_app.apps.ModelsAppConfig',
+    "rest_framework",
+    'rest_framework.authtoken',
+    'service_objects',
 ]
 
 MIDDLEWARE = [
@@ -109,7 +110,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = env("STATIC_URL", cast=str)
+STATIC_URL = env("STATIC_URL", cast=str, default="/static/")
 STATIC_ROOT = os.path.join(BASE_DIR, env("STATIC_ROOT", cast=str, default="static"))
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
@@ -117,3 +118,5 @@ MEDIA_URL = "/media/"
 AUTH_USER_MODEL = 'models_app.User'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

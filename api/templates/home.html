@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Домашняя страница{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}"/>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            const scrollContainer = document.getElementById('scroll-container');
+            let isDragging = false;
+            let startPositionX = 0;
+
+            scrollContainer.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+            });
+
+            scrollContainer.addEventListener('mousedown', (e) => {
+                if (e.button === 2) {
+                    isDragging = true;
+                    startPositionX = e.clientX;
+
+                    document.addEventListener('mousemove', onMouseMove);
+                    document.addEventListener('mouseup', onMouseUp);
+                }
+            });
+
+            function onMouseMove(e) {
+                if (isDragging) {
+                    const deltaX = e.clientX - startPositionX;
+                    scrollContainer.scrollLeft -= deltaX;
+                    startPositionX = e.clientX;
+                }
+            }
+
+            function onMouseUp() {
+                isDragging = false;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+
+
+            function getCookie(c_name) {
+                if (document.cookie.length > 0) {
+                    c_start = document.cookie.indexOf(c_name + "=");
+                    if (c_start !== -1) {
+                        c_start = c_start + c_name.length + 1;
+                        c_end = document.cookie.indexOf(";", c_start);
+                        if (c_end === -1) c_end = document.cookie.length;
+                        return unescape(document.cookie.substring(c_start, c_end));
+                    }
+                }
+                return "";
+            }
+
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken"),
+                    "Authorization": "Token {{ user.auth_token.key }}",
+                }
+            });
+
+            $(document).on('click', '.get_projects', function (e) {
+                let list_projects = $("#list_projects");
+                if (list_projects.is(':empty')) {
+                    $.ajax({
+                        type: "GET",
+                        url: "{% url 'list_projects' %}",
+                        data: JSON.stringify({}),
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function (response) {
+                            list_projects.empty();
+                            for (let i = 0; i < response.length; i++) {
+                                list_projects.append(`{% include 'include/project.html' with img="${response[i].project.image}" title="${response[i].project.name}" %}`);
+                                setTimeout(function () {
+                                    list_projects.find('.project-item').eq(i).addClass("expanded");
+                                }, 40 * i);
+                            }
+                            $("#image-storage").attr("src", "{% static 'img/Arrow_open.svg' %}");
+                        },
+                        error: function (response) {
+                            console.log(response);
+                        }
+                    });
+                    return false;
+                } else {
+                    list_projects.empty();
+                    $("#image-storage").attr("src", "{% static 'img/Arrow_close.svg' %}");
+                }
+
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="header-home">
+        <div class="flex-block block-logo">
+            <div>
+                <a href="{% url 'index' %}"><img src="{% static 'img/logo.svg' %}" alt=""/></a>
+            </div>
+            <div class="text-logo">
+                <a href="{% url 'index' %}"><h1>ProjectTracker</h1></a>
+            </div>
+        </div>
+
+        <div class="align-vertical all-task">
+            <p class="text-header">Все задачи</p>
+        </div>
+
+        <div class="line"></div>
+
+        <div class="flex-block">
+            <div class="icon-header">
+                <img src="{% static 'img/list.svg' %}" alt=""/>
+            </div>
+            <div>
+                <p class="text-header">Список</p>
+            </div>
+        </div>
+
+        <div class="line"></div>
+
+        <div class="flex-block">
+            <div class="icon-header">
+                <img src="{% static 'img/board.svg' %}" alt=""/>
+            </div>
+            <div>
+                <p class="text-header">Доска</p>
+            </div>
+        </div>
+
+        <div class="flex-block share">
+            <div class="icon-header">
+                <img src="{% static 'img/share.svg' %}" alt=""/>
+            </div>
+            <div class="share-text">
+                <p class="text-header">Поделиться</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="block-menu">
+            <div class="block-search">
+                <input
+                        placeholder="Поиск"
+                        style="background: url({% static 'img/search.svg' %}) no-repeat center left 12px;"
+                        type="text"
+                        class="input-search"
+                />
+            </div>
+
+            <div class="flex-block block-link">
+                <img src="{% static 'img/home.svg' %}" alt=""/>
+                <p>Главная</p>
+            </div>
+
+            <div class="flex-block block-link">
+                <img src="{% static 'img/notification.svg' %}" alt="" class="img-notif"/>
+                <p>Уведомления</p>
+            </div>
+
+            <div class="block-favorite">
+                <div class="flex-block inner-favorite">
+                    <h1>Избранное</h1>
+                    <img src="{% static 'img/Arrow_close.svg' %}" alt=""/>
+                </div>
+            </div>
+
+            <div class="block-favorite get_projects">
+                <div class="flex-block inner-favorite">
+                    <h1>Пространства</h1>
+                    <img id="image-storage" src="{% static 'img/Arrow_close.svg' %}" alt=""/>
+                </div>
+            </div>
+            <div id="list_projects"></div>
+
+
+            <div class="block-logout">
+                <button class="btn-logout">Выйти</button>
+            </div>
+
+        </div>
+
+        <div class="right-block-home">
+            <div class="line-filter">
+                <div class="block-search-task">
+                    <input
+                            placeholder="Поиск задач..."
+                            style="background: url({% static 'img/search.svg' %}) no-repeat center left 12px;"
+                            type="text"
+                            class="input-search task_search"
+                    />
+                </div>
+                <div class="line line-in-filter"></div>
+                <div class="block-with-list-filters">
+                    <div class="filter-item">
+                        <div>
+                            <img class="image-filter" src="{% static 'img/filters/filters.svg' %}" alt="">
+                        </div>
+                        <div class="text-filter">
+                            <p>Фильтры</p>
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <div>
+                            <img class="image-filter fix-sort" src="{% static 'img/filters/sort_by.svg' %}" alt="">
+                        </div>
+                        <div class="text-filter">
+                            <p>Сортировка</p>
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <div>
+                            <img class="image-filter" src="{% static 'img/filters/my_task.svg' %}" alt="">
+                        </div>
+                        <div class="text-filter">
+                            <p>Мои задачи</p>
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <div>
+                            <img class="image-filter" src="{% static 'img/filters/show.svg' %}" alt="">
+                        </div>
+                        <div class="text-filter">
+                            <p>Показать</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scroll-container">
+                <div class="scroll-content" id="scroll-container">
+                    <div class="content">
+
+                        <div class="container-column">
+                            {% for s in status %}
+                                <div class="column">
+                                    <div
+                                            class="block-status-task"
+                                            style="box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 -4px 0 {{ s.color }};"
+                                    >
+                                        <div class="title-status">
+                                            <p>{{ s.status }}</p>
+                                        </div>
+                                        <div class="count-task-status">
+                                            <p>{{ s.count_task }}</p>
+                                        </div>
+                                    </div>
+
+                                    {% for task in s.tasks_status.all %}
+                                        <div class="block-task">
+                                            <div class="task-url">
+                                                <div class="item-url">
+                                                    <p>Пространства</p>
+                                                </div>
+                                                <div class="item-url">
+                                                    <img src="{% static 'img/arrow_url.svg' %}" alt="">
+                                                </div>
+                                                <div class="item-url">
+                                                    <p>{{ project.name }}</p>
+                                                </div>
+                                                <div class="item-url">
+                                                    <img src="{% static 'img/arrow_url.svg' %}" alt="">
+                                                </div>
+                                                <div class="item-url">
+                                                    <p>{{ s.status }}</p>
+                                                </div>
+                                                <div style="background-color: {{ s.color }};"
+                                                     class="item-url color-item"></div>
+                                            </div>
+                                            <div class="line-task">
+                                                <div class="title-task">
+                                                    <p>{{ task.title }}</p>
+                                                </div>
+                                                <div class="avatar-user-container">
+                                                    {% for foo in "123" %}
+                                                        <div class="avatar-user"></div>
+                                                    {% endfor %}
+                                                    <div>
+                                                        <div class="avatar-user">5+</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="link-redaction">
+                                                <p>Редактировать</p>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="toolbar">
+                            <div class="timer">
+                                <img src="{% static 'img/timer.svg' %}" alt="">
+                            </div>
+                            <div class="create_task">
+                                <div>+</div>
+                                <div>Задача</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
