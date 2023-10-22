@@ -103,6 +103,34 @@
                 }
             });
             get_projects($("#list_projects"));
+
+
+            const openModalBtns = document.querySelectorAll(".openModalBtn");
+            const closeModalBtn = document.getElementById("closeModalBtn");
+            const modal = document.getElementById("myModal");
+            modal.style.display = "block";
+            function openModal() {
+                modal.style.display = "block";
+            }
+            function closeModal() {
+                modal.style.display = "none";
+            }
+            openModalBtns.forEach(function (btn) {
+                btn.addEventListener("click", openModal);
+            });
+            closeModalBtn.addEventListener("click", closeModal);
+            window.addEventListener("click", function (event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+
+            const textarea = document.getElementById("textarea-subtask");
+            textarea.addEventListener("input", function () {
+                this.style.height = "auto";
+                this.style.height = this.scrollHeight + "px";
+            });
         });
 
     </script>
@@ -312,19 +340,155 @@
                                                 </div>
                                             </div>
                                             <div class="link-redaction">
-                                                <p>Редактировать</p>
+                                                <p class="openModalBtn">Редактировать</p>
+                                            </div>
+                                            <div id="myModal" class="modal">
+                                                <div class="modal-content">
+                                                    <div class="header-line-modal">
+                                                        <div class="share-image">
+                                                            <img src="{% static 'img/modal/share_to_board.svg' %}"
+                                                                 alt="">
+                                                        </div>
+                                                        <div id="closeModalBtn">
+                                                            <img src="{% static 'img/modal/close.svg' %}" alt="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="line-info-modal">
+                                                        <div class="left-line-info-modal">
+                                                            <div class="block-status-next">
+                                                                <div class="text-button-task">
+                                                                    <p>{{ s.status }}</p>
+                                                                </div>
+                                                                <div class="arrow-button-task">
+                                                                    <img src="{% static 'img/modal/arrow-right.svg' %}"
+                                                                         alt="">
+                                                                </div>
+                                                            </div>
+                                                            <div class="avatars-developed">
+                                                                {% for foo in "123" %}
+                                                                    <div class="avatar-developed">
+                                                                        <img src="{% static 'img/default.jpg' %}"
+                                                                             alt="">
+                                                                    </div>
+                                                                {% endfor %}
+                                                                <div>
+                                                                    <img src="{% static 'img/modal/add_people.svg' %}"
+                                                                         alt="">
+                                                                </div>
+                                                            </div>
+                                                            <div class="menu-info-modal">
+                                                                <div class="circle"></div>
+                                                                <div class="circle"></div>
+                                                                <div class="circle"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="right-line-info-modal">
+                                                            <div class="date-create">
+                                                                <div class="text-info">
+                                                                    <p>Дата создания</p>
+                                                                </div>
+                                                                <div class="line-two text-add-info">
+                                                                    <p>21 октября 23:45</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="line line-modal"></div>
+                                                            <div>
+                                                                <div class="text-info">
+                                                                    <p>Отслеживание времени</p>
+                                                                </div>
+                                                                <div class="line-two track-time">
+                                                                    <div class="img-start-track">
+                                                                        <img src="{% static 'img/modal/start_time.svg' %}"
+                                                                             alt="">
+                                                                    </div>
+                                                                    <div class="text-add-info">
+                                                                        <p>0:00:00</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="line line-modal"></div>
+                                                            <div>
+                                                                <div class="text-info">
+                                                                    <p>Время на выполнение</p>
+                                                                </div>
+                                                                <div class="line-two text-add-info">
+                                                                    <p>4 часа</p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="line line-modal"></div>
+                                                            <div>
+                                                                <div class="text-info">
+                                                                    <p>Менеджер задачи</p>
+                                                                </div>
+                                                                <div class="line-two text-add-info">
+                                                                    <p>Разаренов иван дмитриевич</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="main-info-modal">
+                                                        <div class="block-info-task">
+                                                            <div class="main-container-info">
+                                                                <div class="block-title-task">
+                                                                    <p>{{ task.title }}</p>
+                                                                </div>
+                                                                <div class="block-desk-task">
+                                                                    <p>{{ task.description }}</p>
+                                                                </div>
+                                                                <div class="block-extends-task">
+                                                                    <img src="{% static 'img/modal/extends.svg' %}"
+                                                                         alt="">
+                                                                </div>
+                                                                <div class="sub-task">
+                                                                    <p>Подзадачи</p>
+                                                                </div>
+                                                                <div class="block-create-subtask">
+                                                                    <div class="create-title-subtask">
+                                                                        <div class="red-circle"></div>
+                                                                        <div class="title-task-input">
+                                                                            <input type="text"
+                                                                                   placeholder="Новая подзадача">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="create-desk-subtask">
+                                                                        <textarea id="textarea-subtask"
+                                                                                  class="text-area" type="text"
+                                                                                  placeholder="Описание подзадачи"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="create-subtask">
+                                                                    <button>Добавить</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="block-chat-modal">
+                                                            2
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="footer-info-modal">
+                                                        <div class="left-chat-modal"></div>
+                                                        <div class="send-chat-modal">
+                                                            <div class="start-chat">
+                                                                <input class="text-message" type="text"
+                                                                       placeholder="Отправить сообщение">
+                                                            </div>
+                                                            <div class="end-chat">
+                                                                <img src="{% static "img/modal/airplane.svg" %}" alt="">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     {% endfor %}
-
                                 </div>
                             {% endfor %}
                         </div>
-
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 {% endblock %}

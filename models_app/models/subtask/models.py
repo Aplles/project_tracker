@@ -6,6 +6,7 @@ class Subtask(models.Model):
     """ Модель подзадачи """
 
     title = models.CharField(max_length=255, verbose_name='Название подзадачи')
+    description = models.TextField(verbose_name='Описание подзадачи')
     is_done = models.BooleanField(default=False, verbose_name='Выполнена')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
