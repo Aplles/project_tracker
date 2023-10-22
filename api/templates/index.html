@@ -5,66 +5,80 @@
 
 
 {% block script %}
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const sliderContainer = document.querySelector('.slider');
-        const slides = document.querySelectorAll('.slide');
-        slides.forEach((slide, index) => {
-            const clone = slide.cloneNode(true);
-            sliderContainer.appendChild(clone);
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sliderContainer = document.querySelector('.slider');
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach((slide, index) => {
+                const clone = slide.cloneNode(true);
+                sliderContainer.appendChild(clone);
+            });
+            sliderContainer.style.animationPlayState = 'running';
         });
-        sliderContainer.style.animationPlayState = 'running';
-    });
-</script>
+
+        function select_func(block) {
+            $(".column-func").removeClass("select-func");
+            $("#" + block.id).addClass("select-func");
+            if (block.id === "track_time") {
+                $("#title-func").text("Отслеживание времени");
+                $("#content-func").text("Отслеживание времени позволяет пользователям точно учитывать время, затраченное на выполнение задач и проектов.");
+            } else if (block.id === "create_task") {
+                $("#title-func").text("Создание задач");
+                $("#content-func").text("Создавайте и анализируйте задачи для проекта, управляйте ими с помощью интуитивного интерфейса.");
+            } else if (block.id === "comments") {
+                $("#title-func").text("Обсуждение комментариев");
+                $("#content-func").text("Функция обсуждения комментариев предоставляет возможность пользователям взаимодействовать и обсуждать задачи, проекты и их детали.");
+            }
+        }
+    </script>
 {% endblock %}
 
 
 {% block content %}
-<div class="header">
-    <div class="main-container">
-        <div class="header-line">
-            <div class="header-item">
-                <img src="{% static 'img/logo.svg' %}" alt=":)">
+    <div class="header">
+        <div class="main-container">
+            <div class="header-line">
+                <div class="header-item">
+                    <img src="{% static 'img/logo.svg' %}" alt=":)">
+                </div>
+                <div class="header-item title">
+                    <h1 class="link_header">ProjectTracker</h1>
+                </div>
+                <div class="header-item">
+                    <button class="btn_custom">Функции</button>
+                </div>
+                <div class="header-item">
+                    <button class="btn_custom create-project">Создать проект</button>
+                </div>
+                <div class="header-item push-right">
+                    <button class="btn_custom btn_red">Войти</button>
+                </div>
             </div>
-            <div class="header-item title">
-                <h1 class="link_header">ProjectTracker</h1>
-            </div>
-            <div class="header-item">
-                <button class="btn_custom">Функции</button>
-            </div>
-            <div class="header-item">
-                <button class="btn_custom create-project">Создать проект</button>
-            </div>
-            <div class="header-item push-right">
-                <button class="btn_custom btn_red">Войти</button>
-            </div>
-        </div>
 
-        <div class="header-info">
-            <div class="header-text">
-                <div>
-                    <h1 class="title-header">
-                        <span id="span">ProjectTracker</span> помогает собрать <br>всех сотрудников,<br>
-                        задачи и инструменты в<br>
-                        одном месте
-                    </h1>
+            <div class="header-info">
+                <div class="header-text">
+                    <div>
+                        <h1 class="title-header">
+                            <span id="span">ProjectTracker</span> помогает собрать <br>всех сотрудников,<br>
+                            задачи и инструменты в<br>
+                            одном месте
+                        </h1>
+                    </div>
+                    <div class="block-text-header">
+                        <p class="text-header">
+                            Реализуйте свой первый проект, даже если<br> ваша команда рассеяна по всему миру
+                        </p>
+                    </div>
+                    <div>
+                        <button class="btn_custom btn_red">Создать проект</button>
+                    </div>
                 </div>
-                <div class="block-text-header">
-                    <p class="text-header">
-                        Реализуйте свой первый проект, даже если<br> ваша команда рассеяна по всему миру
-                    </p>
+                <div class="header-image">
+                    <img src="{% static 'img/main_icon.svg' %}" alt="">
                 </div>
-                <div>
-                    <button class="btn_custom btn_red">Создать проект</button>
-                </div>
-            </div>
-            <div class="header-image">
-                <img src="{% static 'img/main.svg' %}" alt="">
             </div>
         </div>
     </div>
-</div>
-<div>
     <div class="main-container">
         <div class="title-project">
             <h1 class="title-text">Реализованные проекты</h1>
@@ -74,14 +88,14 @@
         <div class="slider-container">
             <div class="slider" id="slider">
                 {% for project in projects %}
-                <div class="slide">
-                    <div>
-                        <h1>{{ project.name }}</h1>
+                    <div class="slide">
+                        <div>
+                            <h1>{{ project.name }}</h1>
+                        </div>
+                        <div>
+                            <img class="image-project" src="{{ project.image.url }}" alt="">
+                        </div>
                     </div>
-                    <div>
-                        <img class="image-project" src="{{ project.image.url }}" alt="">
-                    </div>
-                </div>
                 {% endfor %}
             </div>
         </div>
@@ -92,29 +106,64 @@
         </div>
         <div class="func-project">
             <div class="func-title">
-                <h1>Создание задач</h1>
+                <h1 id="title-func">Создание задач</h1>
             </div>
             <div class="func-desc">
-                <p>Создавайте и анализируйте задачи для проекта, управляйте ими с помощью интуитивного интерфейса</p>
+                <p id="content-func">Создавайте и анализируйте задачи для проекта, управляйте ими с помощью
+                    интуитивного интерфейса</p>
             </div>
             <div class="group-func">
-                <div class="column-func">
+                <div id="comments" class="column-func" onclick="select_func(this)">
                     <p>Обсуждение комментариев</p>
                 </div>
-                <div class="column-func select-func">
+                <div id="create_task" class="column-func select-func" onclick="select_func(this)">
                     <p>Создание задач</p>
                 </div>
-                <div class="column-func">
+                <div id="track_time" class="column-func" onclick="select_func(this)">
                     <p>Отслеживание времени</p>
                 </div>
             </div>
         </div>
 
-        <div class="title-project">
-            <h1 class="title-text">Наши функции</h1>
+        <div class="block-additional-info top-add">
+            <div>
+                <h1 class="title-add">1000+</h1>
+            </div>
+            <div>
+                <p class="desc-add">Зарегестрированных пользователей</p>
+            </div>
+        </div>
+        <div class="parent-additional-info">
+            <div class="block-additional-info first-add">
+                <div>
+                    <h1 class="title-add">500+</h1>
+                </div>
+                <div>
+                    <p class="desc-add">Успешных проектов</p>
+                </div>
+            </div>
+            <div class="block-additional-info last-add">
+                <div>
+                    <h1 class="title-add">300%</h1>
+                </div>
+                <div>
+                    <p class="desc-add">Повышения производительности</p>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+    <footer>
+        <div class="main-container main-container-footer">
+            <div class="header-line">
+                <div class="header-item">
+                    <img src="{% static 'img/logo.svg' %}" alt=":)">
+                </div>
+                <div class="header-item title">
+                    <h1 class="link_header">ProjectTracker</h1>
+                </div>
+            </div>
+        </div>
+    </footer>
 {% endblock %}
 
 

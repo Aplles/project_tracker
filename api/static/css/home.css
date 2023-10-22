@@ -173,7 +173,7 @@ input {
 
 .btn-logout {
     width: 300px;
-    height: 30px;
+    height: 35px;
     color: white;
     background-color: #F00;
     border-radius: 10px;
@@ -182,16 +182,16 @@ input {
 
 .project-item {
     display: flex;
+    align-items: center;
     margin-left: 32px;
     margin-bottom: 10px;
-
-    overflow: hidden;
     height: 0;
-    transition: height 10s ease;
+    line-height: 12px;
+    transition: height 0.1s ease;
 }
 
 .project-item.expanded {
-    height: auto;
+    height: 30px;
 }
 
 .image-container {
@@ -200,7 +200,7 @@ input {
     margin-right: 12px;
 }
 
-.image-folder {
+.image-project {
     width: 14px;
 }
 
@@ -304,14 +304,13 @@ input {
     width: 100%; /* Ширина должна быть 100%, чтобы контент мог прокручиваться вправо */
     align-self: flex-end; /* Прижимаем контент к нижнему краю блока */
     overflow: scroll;
-    display: flex;
 }
 
 .content {
     width: max-content;
     margin-top: 14px;
     margin-left: 43px;
-    height: 100vh;
+    height: 80vh;
 }
 
 .container-column {
@@ -351,7 +350,7 @@ input {
 
 .count-task-status {
     border-radius: 10px;
-    border: 1px solid #3F3F3F;
+    border: 2px solid #3F3F3F;
     padding: 2px 10px;
     text-align: center;
 }
@@ -456,8 +455,10 @@ input {
 
 
 .toolbar {
+    flex-grow: 1;
     display: flex;
-    align-items: center;
+    align-items: stretch;
+    margin: 30px 0;
 }
 
 .timer {
@@ -473,4 +474,39 @@ input {
     padding: 9px;
 }
 
+.create_task {
+    width: 100px;
+    height: 40px;
+    border-radius: 10px;
+    background: #F22;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+}
 
+.create_task div {
+    color: #FFF;
+    font-family: "DM Sans", sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.plus {
+    font-size: 20px !important;
+}
+
+.plus_task {
+    margin-top: 1px;
+}
+
+.red-line {
+    background-color: rgba(255, 0, 0, 0.10);
+    border-left: 3px solid red;
+    border-radius: 2px;
+    margin-left: 0;
+    padding-left: 32px;
+}

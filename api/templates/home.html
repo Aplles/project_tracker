@@ -9,7 +9,9 @@
 
 {% block script %}
     <script>
+
         $(document).ready(function () {
+
             const scrollContainer = document.getElementById('scroll-container');
             let isDragging = false;
             let startPositionX = 0;
@@ -63,37 +65,46 @@
                 }
             });
 
+            function get_projects(list_projects) {
+                $.ajax({
+                    type: "GET",
+                    url: "{% url 'list_projects' %}",
+                    data: JSON.stringify({}),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (response) {
+                        list_projects.empty();
+                        for (let i = 0; i < response.length; i++) {
+                            let url = ("{% url 'project_page' 0 %}" + response[i].project.id + "/").replace('/0/', '/');
+                            let image = response[i].project.image;
+                            let title = response[i].project.name;
+                            list_projects.append(`{% include 'include/project.html' with img="${image}" title="${title}" url="${url}" %}`);
+                            setTimeout(function () {
+                                list_projects.find('.project-item').eq(i).addClass("expanded");
+                            }, 40 * i);
+                        }
+                        $("#image-storage").attr("src", "{% static 'img/Arrow_open.svg' %}");
+                        $(`#{{ project.name }}`).addClass('red-line');
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                });
+                return false;
+            }
+
             $(document).on('click', '.get_projects', function (e) {
                 let list_projects = $("#list_projects");
                 if (list_projects.is(':empty')) {
-                    $.ajax({
-                        type: "GET",
-                        url: "{% url 'list_projects' %}",
-                        data: JSON.stringify({}),
-                        contentType: "application/json",
-                        dataType: "json",
-                        success: function (response) {
-                            list_projects.empty();
-                            for (let i = 0; i < response.length; i++) {
-                                list_projects.append(`{% include 'include/project.html' with img="${response[i].project.image}" title="${response[i].project.name}" %}`);
-                                setTimeout(function () {
-                                    list_projects.find('.project-item').eq(i).addClass("expanded");
-                                }, 40 * i);
-                            }
-                            $("#image-storage").attr("src", "{% static 'img/Arrow_open.svg' %}");
-                        },
-                        error: function (response) {
-                            console.log(response);
-                        }
-                    });
-                    return false;
+                    get_projects(list_projects);
                 } else {
                     list_projects.empty();
                     $("#image-storage").attr("src", "{% static 'img/Arrow_close.svg' %}");
                 }
-
             });
+            get_projects($("#list_projects"));
         });
+
     </script>
 {% endblock %}
 
@@ -133,6 +144,7 @@
                 <p class="text-header">Доска</p>
             </div>
         </div>
+
 
         <div class="flex-block share">
             <div class="icon-header">
@@ -237,7 +249,19 @@
             <div class="scroll-container">
                 <div class="scroll-content" id="scroll-container">
                     <div class="content">
-
+                        <div class="toolbar">
+                            <div class="timer">
+                                <img src="{% static 'img/timer.svg' %}" alt="">
+                            </div>
+                            <div class="create_task">
+                                <div class="plus">
+                                    <p>+</p>
+                                </div>
+                                <div class="plus_task">
+                                    <p>Задача</p>
+                                </div>
+                            </div>
+                        </div>
                         <div class="container-column">
                             {% for s in status %}
                                 <div class="column">
@@ -295,16 +319,6 @@
 
                                 </div>
                             {% endfor %}
-                        </div>
-
-                        <div class="toolbar">
-                            <div class="timer">
-                                <img src="{% static 'img/timer.svg' %}" alt="">
-                            </div>
-                            <div class="create_task">
-                                <div>+</div>
-                                <div>Задача</div>
-                            </div>
                         </div>
 
                     </div>

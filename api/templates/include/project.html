@@ -1,9 +1,9 @@
 {% load static %}
-<div class="project-item">
+<div class="project-item"  id="{{ title }}">
     <div class="image-container">
-        <img class="image-folder" src="{{ img }}" alt="">
+        <img class="image-project" src="{{ img }}" alt="">
     </div>
     <div class="text-container">
-        <p>{{ title }}</p>
+        <p><a href="{{ url }}">{{ title }}</a></p>
     </div>
 </div>

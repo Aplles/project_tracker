@@ -11,6 +11,6 @@ urlpatterns = [
     # Pages
     path("", IndexPageView.as_view(), name='index'),
     path("home/", HomePageView.as_view(), name='home'),
-    path("home/project/<int:id>/", ProjectPageView.as_view(), name='project_page'),
+    path("home/project/<id>/", ProjectPageView.as_view(), name='project_page'),
 ]
 

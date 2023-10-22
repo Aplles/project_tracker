@@ -189,12 +189,12 @@ p {
     flex: 1;
     display: flex;
     align-items: center;
-    margin: -200px -200px -200px 0px;
+    margin: -300px 0 -200px 230px;
 }
 
 .header-image img {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 580px;
+    max-height: 580px;
 }
 
 .title-text {
@@ -296,6 +296,7 @@ p {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 .column-func p {
@@ -308,6 +309,7 @@ p {
 
 .select-func {
     background: #DA180B;
+    border-radius: 20px;
 }
 
 .func-title {
@@ -335,4 +337,60 @@ p {
     font-style: normal;
     font-weight: 400;
     line-height: 38px;
+}
+
+.parent-additional-info {
+    display: flex;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.block-additional-info {
+    border-radius: 20px;
+    border: 2px solid #E5E5E5;
+    background: #FFF;
+    padding: 56px 0;
+    text-align: center;
+    width: 100%;
+}
+
+.first-add {
+    flex: 1;
+    margin-right: 30px;
+}
+
+.last-add {
+    flex: 1;
+    margin-right: 0;
+}
+
+.title-add {
+    color: #000;
+    font-size: 100px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.desc-add {
+    color: #000;
+    text-align: center;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 38px;
+}
+
+.top-add {
+    margin-top: 120px;
+}
+
+footer {
+    background-color: black;
+    margin-top: 140px;
+    height: 300px;
+}
+
+.main-container-footer {
+   padding-top: 100px;
 }
