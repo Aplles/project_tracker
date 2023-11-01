@@ -17,17 +17,17 @@
                 if (!$descSubtask.is(':visible') &&
                     $imageSubtask.attr('src') === "{% static "img/modal/button_down.svg" %}") {
                     $imageSubtask.attr('src', '{% static "img/modal/button_up.svg" %}');
-                } else if (!$descSubtask.is(':visible')) {
-                    $imageSubtask.attr('src', '{% static "img/modal/button_down.svg" %}');
-                } else {
+                 }
+                if (!$descSubtask.is(':visible')) {
                     $imageSubtask.attr('src', '{% static "img/modal/button_up.svg" %}');
+                } else {
+                    $imageSubtask.attr('src', '{% static "img/modal/button_down.svg" %}');
                 }
                 $descSubtask.fadeToggle('slow');
             } else {
                 console.error('Элемент с указанным классом не найден');
             }
         }
-
 
         $(document).ready(function () {
 
@@ -588,6 +588,58 @@
                                                                             <p>Настройте сервер ребятки</p>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="block-main-subtask"
+                                                                         onclick="get_subtask_info(this)">
+                                                                        <div class="block-subtask">
+                                                                            <div>
+                                                                                <div class="block-checkbox-subtask">
+                                                                                    <input type="checkbox" value="True">
+                                                                                </div>
+                                                                                <div class="block-title-subtask">
+                                                                                    <p>Настройка сервера</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div>
+                                                                                <div class="block-date-subtask">
+                                                                                    <p>22.10.2023</p>
+                                                                                </div>
+                                                                                <div class="block-image-subtask">
+                                                                                    <img class="image-subtask"
+                                                                                         src="{% static 'img/modal/button_down.svg' %}"
+                                                                                         alt=">">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="desc-subtask" style="display: none">
+                                                                            <p>Настройте сервер ребятки</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="block-main-subtask"
+                                                                         onclick="get_subtask_info(this)">
+                                                                        <div class="block-subtask">
+                                                                            <div>
+                                                                                <div class="block-checkbox-subtask">
+                                                                                    <input type="checkbox" value="True">
+                                                                                </div>
+                                                                                <div class="block-title-subtask">
+                                                                                    <p>Настройка сервера</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div>
+                                                                                <div class="block-date-subtask">
+                                                                                    <p>22.10.2023</p>
+                                                                                </div>
+                                                                                <div class="block-image-subtask">
+                                                                                    <img class="image-subtask"
+                                                                                         src="{% static 'img/modal/button_down.svg' %}"
+                                                                                         alt=">">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="desc-subtask" style="display: none">
+                                                                            <p>Настройте сервер ребятки</p>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -598,7 +650,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                     <div class="footer-info-modal">
                                                         <div class="left-chat-modal"></div>
                                                         <div class="send-chat-modal"></div>
