@@ -9,6 +9,25 @@
 
 {% block script %}
     <script>
+        function get_subtask_info(param) {
+            let $param = $(param);
+            let $descSubtask = $param.find('.desc-subtask');
+            let $imageSubtask = $param.find('.image-subtask');
+            if ($descSubtask.length > 0) {
+                if (!$descSubtask.is(':visible') &&
+                    $imageSubtask.attr('src') === "{% static "img/modal/button_down.svg" %}") {
+                    $imageSubtask.attr('src', '{% static "img/modal/button_up.svg" %}');
+                } else if (!$descSubtask.is(':visible')) {
+                    $imageSubtask.attr('src', '{% static "img/modal/button_down.svg" %}');
+                } else {
+                    $imageSubtask.attr('src', '{% static "img/modal/button_up.svg" %}');
+                }
+                $descSubtask.fadeToggle('slow');
+            } else {
+                console.error('Элемент с указанным классом не найден');
+            }
+        }
+
 
         $(document).ready(function () {
 
@@ -109,12 +128,15 @@
             const closeModalBtn = document.getElementById("closeModalBtn");
             const modal = document.getElementById("myModal");
             modal.style.display = "block";
+
             function openModal() {
                 modal.style.display = "block";
             }
+
             function closeModal() {
                 modal.style.display = "none";
             }
+
             openModalBtns.forEach(function (btn) {
                 btn.addEventListener("click", openModal);
             });
@@ -421,7 +443,7 @@
                                                                     <p>Менеджер задачи</p>
                                                                 </div>
                                                                 <div class="line-two text-add-info">
-                                                                    <p>Разаренов иван дмитриевич</p>
+                                                                    <p>Разаренов Иван дмитриевич</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -460,10 +482,120 @@
                                                                 <div class="create-subtask">
                                                                     <button>Добавить</button>
                                                                 </div>
+
+                                                                <div class="block-list-subtask">
+                                                                    <div class="block-main-subtask"
+                                                                         onclick="get_subtask_info(this)">
+                                                                        <div class="block-subtask">
+                                                                            <div>
+                                                                                <div class="block-checkbox-subtask">
+                                                                                    <input type="checkbox" value="True">
+                                                                                </div>
+                                                                                <div class="block-title-subtask">
+                                                                                    <p>Настройка сервера</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div>
+                                                                                <div class="block-date-subtask">
+                                                                                    <p>22.10.2023</p>
+                                                                                </div>
+                                                                                <div class="block-image-subtask">
+                                                                                    <img class="image-subtask"
+                                                                                         src="{% static 'img/modal/button_down.svg' %}"
+                                                                                         alt=">">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="desc-subtask" style="display: none">
+                                                                            <p>Настройте сервер ребятки</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="block-main-subtask"
+                                                                         onclick="get_subtask_info(this)">
+                                                                        <div class="block-subtask">
+                                                                            <div>
+                                                                                <div class="block-checkbox-subtask">
+                                                                                    <input type="checkbox" value="True">
+                                                                                </div>
+                                                                                <div class="block-title-subtask">
+                                                                                    <p>Настройка сервера</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div>
+                                                                                <div class="block-date-subtask">
+                                                                                    <p>22.10.2023</p>
+                                                                                </div>
+                                                                                <div class="block-image-subtask">
+                                                                                    <img class="image-subtask"
+                                                                                         src="{% static 'img/modal/button_down.svg' %}"
+                                                                                         alt=">">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="desc-subtask" style="display: none">
+                                                                            <p>Настройте сервер ребятки</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="block-main-subtask"
+                                                                         onclick="get_subtask_info(this)">
+                                                                        <div class="block-subtask">
+                                                                            <div>
+                                                                                <div class="block-checkbox-subtask">
+                                                                                    <input type="checkbox" value="True">
+                                                                                </div>
+                                                                                <div class="block-title-subtask">
+                                                                                    <p>Настройка сервера</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div>
+                                                                                <div class="block-date-subtask">
+                                                                                    <p>22.10.2023</p>
+                                                                                </div>
+                                                                                <div class="block-image-subtask">
+                                                                                    <img class="image-subtask"
+                                                                                         src="{% static 'img/modal/button_down.svg' %}"
+                                                                                         alt=">">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="desc-subtask" style="display: none">
+                                                                            <p>Настройте сервер ребятки</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="block-main-subtask"
+                                                                         onclick="get_subtask_info(this)">
+                                                                        <div class="block-subtask">
+                                                                            <div>
+                                                                                <div class="block-checkbox-subtask">
+                                                                                    <input type="checkbox" value="True">
+                                                                                </div>
+                                                                                <div class="block-title-subtask">
+                                                                                    <p>Настройка сервера</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div>
+                                                                                <div class="block-date-subtask">
+                                                                                    <p>22.10.2023</p>
+                                                                                </div>
+                                                                                <div class="block-image-subtask">
+                                                                                    <img class="image-subtask"
+                                                                                         src="{% static 'img/modal/button_down.svg' %}"
+                                                                                         alt=">">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="desc-subtask" style="display: none">
+                                                                            <p>Настройте сервер ребятки</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="block-chat-modal">
-                                                            2
+                                                            <div class="block-message">
+                                                                <p class="text-message">Максим Караичев создал
+                                                                    задачу</p>
+                                                            </div>
                                                         </div>
                                                     </div>
 

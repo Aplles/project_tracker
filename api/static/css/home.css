@@ -717,6 +717,8 @@ input {
 
 .block-chat-modal {
     flex: 1;
+    text-align: center;
+    padding-top: 20px;
 }
 
 
@@ -866,6 +868,82 @@ input {
     padding: 3px 30px;
     color: #FFF;
     font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.block-message {
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.block-list-subtask {
+    margin-top: 25px;
+}
+
+.block-subtask {
+    width: 100%;
+    height: 52px;
+    align-items: center;
+    border-radius: 10px;
+    border-bottom: 1px solid #B7B7B7;
+    display: inline-flex;
+    justify-content: space-between;
+}
+
+.block-subtask div {
+    display: inline-flex;
+    align-items: center;
+}
+
+.block-checkbox-subtask {
+    border-radius: 3px;
+    border: 1px solid #B7B7B7;
+    margin-left: 16px;
+}
+
+.block-checkbox-subtask input {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+}
+
+.block-checkbox-subtask input:hover, .block-checkbox-subtask input:checked {
+    background-color: #FFA4A4;
+}
+
+.block-title-subtask {
+    margin-left: 13px;
+}
+
+.block-image-subtask {
+    margin-right: 25px;
+}
+
+.block-image-subtask img {
+    width: 14px;
+    height: 14px;
+}
+
+.block-date-subtask {
+    margin-right: 17px;
+}
+
+.block-main-subtask {
+    border-radius: 10px;
+    border: 1px solid #B7B7B7;
+    margin-top: 10px;
+}
+
+.desc-subtask {
+    padding: 9px 0 0 16px;
+    min-height: 50px;
+}
+
+.desc-subtask p {
+    color: #515151;
+    font-size: 15px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
