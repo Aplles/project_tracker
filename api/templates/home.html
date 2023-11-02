@@ -75,10 +75,22 @@
                 localStorage.setItem(`timer_${timerId}`, JSON.stringify(timerData));
             }
 
+            // Загрузить состояние таймеров из localStorage при загрузке страницы
             $(".timer-task").each(function () {
-                updateTimer(this);
+                const timerId = $(this).data("timer-id");
+                const intervalId = localStorage.getItem(`timer_interval_${timerId}`);
+
+                if (intervalId) {
+                    let image = $(`.start-button[data-timer-id="${timerId}"]`);
+                    $(image).attr('src', '{% static 'img/modal/pause_time.svg' %}')
+                    startTimer(this, timerId);
+                }
+                else {
+                    updateTimer(this);
+                }
             });
 
+            // Обработчик события для кнопок "Start"
             $(".start-button").on("click", function () {
                 const timerId = $(this).data("timer-id");
                 const timer = $(`.timer-task[data-timer-id="${timerId}"]`);
@@ -93,6 +105,7 @@
                     const intervalId = localStorage.getItem(`timer_interval_${timerId}`);
                     if (intervalId) {
                         clearInterval(parseInt(intervalId, 10));
+                        localStorage.removeItem(`timer_interval_${timerId}`);
                     }
                 }
             });
@@ -100,7 +113,7 @@
             function startTimer(timer, timerId) {
                 const interval = setInterval(function () {
                     updateTimer(timer);
-                 }, 1000);
+                }, 1000);
                 updateTimer(timer);
                 localStorage.setItem(`timer_interval_${timerId}`, interval);
             }
