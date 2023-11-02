@@ -24,6 +24,12 @@ class Task(models.Model):
         related_name='tasks_project',
         verbose_name='Проект'
     )
+    author = models.ForeignKey(
+        'User',
+        on_delete=models.CASCADE,
+        related_name='tasks_author',
+        verbose_name='Менеджер задачи'
+    )
 
     def __str__(self):
         return f'{self.project} - {self.title}'

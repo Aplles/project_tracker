@@ -17,7 +17,7 @@
                 if (!$descSubtask.is(':visible') &&
                     $imageSubtask.attr('src') === "{% static "img/modal/button_down.svg" %}") {
                     $imageSubtask.attr('src', '{% static "img/modal/button_up.svg" %}');
-                 }
+                }
                 if (!$descSubtask.is(':visible')) {
                     $imageSubtask.attr('src', '{% static "img/modal/button_up.svg" %}');
                 } else {
@@ -29,7 +29,83 @@
             }
         }
 
+        let modalOpen = false;
+        function open_modal(id_modal) {
+            let modal = $(`#myModal_${id_modal}`);
+            modal.show();
+            modalOpen = true;
+        }
+        function close_modal(id_modal) {
+            let modal = $(`#myModal_${id_modal}`);
+            modal.hide();
+            modalOpen = false;
+        }
+        $(document).on('click', function(event) {
+            if (modalOpen && !$(event.target).closest(".modal-content").length) {
+                try {
+                    $(`#${event.target.id}`).hide();
+                }
+                catch (Exception) {
+                }
+            }
+        });
+
+
+
         $(document).ready(function () {
+
+            function updateTimer(timer) {
+                const timerId = $(timer).data("timer-id");
+                const timerData = JSON.parse(localStorage.getItem(`timer_${timerId}`)) || {
+                    hours: 0,
+                    minutes: 0,
+                    seconds: 0,
+                };
+                timerData.seconds++;
+                if (timerData.seconds === 60) {
+                    timerData.seconds = 0;
+                    timerData.minutes++;
+                }
+                if (timerData.minutes === 60) {
+                    timerData.minutes = 0;
+                    timerData.hours++;
+                }
+                const formattedTime = `${timerData.hours.toString().padStart(2, "0")}:${timerData.minutes.toString().padStart(2, "0")}:${timerData.seconds.toString().padStart(2, "0")}`;
+                $(timer).text(formattedTime);
+                localStorage.setItem(`timer_${timerId}`, JSON.stringify(timerData));
+            }
+
+            $(".timer-task").each(function () {
+                updateTimer(this);
+            });
+
+            $(".start-button").on("click", function () {
+                const timerId = $(this).data("timer-id");
+                const timer = $(`.timer-task[data-timer-id="${timerId}"]`);
+
+                let image = $(`.start-button[data-timer-id="${timerId}"]`);
+                if ($(image).attr('src') === "{% static 'img/modal/start_time.svg' %}"){
+                    $(image).attr('src', '{% static 'img/modal/pause_time.svg' %}')
+                    startTimer(timer, timerId);
+                }
+                 else {
+                    $(image).attr('src', '{% static 'img/modal/start_time.svg' %}')
+                    const intervalId = localStorage.getItem(`timer_interval_${timerId}`);
+                    if (intervalId) {
+                        clearInterval(parseInt(intervalId, 10));
+                    }
+                }
+            });
+
+            function startTimer(timer, timerId) {
+                const interval = setInterval(function () {
+                    updateTimer(timer);
+                 }, 1000);
+                updateTimer(timer);
+                localStorage.setItem(`timer_interval_${timerId}`, interval);
+            }
+
+            $("#myModal_2").show();
 
             const scrollContainer = document.getElementById('scroll-container');
             let isDragging = false;
@@ -62,7 +138,6 @@
                 document.removeEventListener('mousemove', onMouseMove);
                 document.removeEventListener('mouseup', onMouseUp);
             }
-
 
             function getCookie(c_name) {
                 if (document.cookie.length > 0) {
@@ -122,31 +197,6 @@
                 }
             });
             get_projects($("#list_projects"));
-
-
-            const openModalBtns = document.querySelectorAll(".openModalBtn");
-            const closeModalBtn = document.getElementById("closeModalBtn");
-            const modal = document.getElementById("myModal");
-            modal.style.display = "block";
-
-            function openModal() {
-                modal.style.display = "block";
-            }
-
-            function closeModal() {
-                modal.style.display = "none";
-            }
-
-            openModalBtns.forEach(function (btn) {
-                btn.addEventListener("click", openModal);
-            });
-            closeModalBtn.addEventListener("click", closeModal);
-            window.addEventListener("click", function (event) {
-                if (event.target === modal) {
-                    closeModal();
-                }
-            });
-
 
             const textarea = document.getElementById("textarea-subtask");
             textarea.addEventListener("input", function () {
@@ -248,7 +298,6 @@
             </div>
 
         </div>
-
         <div class="right-block-home">
             <div class="line-filter">
                 <div class="block-search-task">
@@ -295,7 +344,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="scroll-container">
                 <div class="scroll-content" id="scroll-container">
                     <div class="content">
@@ -362,16 +410,16 @@
                                                 </div>
                                             </div>
                                             <div class="link-redaction">
-                                                <p class="openModalBtn">Редактировать</p>
+                                                <p onclick="open_modal({{ task.id }})" class="openModalBtn">Редактировать</p>
                                             </div>
-                                            <div id="myModal" class="modal">
+                                            <div id="myModal_{{ task.id }}" class="modal">
                                                 <div class="modal-content">
                                                     <div class="header-line-modal">
                                                         <div class="share-image">
                                                             <img src="{% static 'img/modal/share_to_board.svg' %}"
                                                                  alt="">
                                                         </div>
-                                                        <div id="closeModalBtn">
+                                                        <div id="closeModalBtn" onclick="close_modal({{ task.id }})">
                                                             <img src="{% static 'img/modal/close.svg' %}" alt="">
                                                         </div>
                                                     </div>
@@ -410,7 +458,7 @@
                                                                     <p>Дата создания</p>
                                                                 </div>
                                                                 <div class="line-two text-add-info">
-                                                                    <p>21 октября 23:45</p>
+                                                                    <p>{{ task.created_at|date:"d E H:i" }}</p>
                                                                 </div>
                                                             </div>
                                                             <div class="line line-modal"></div>
@@ -420,11 +468,10 @@
                                                                 </div>
                                                                 <div class="line-two track-time">
                                                                     <div class="img-start-track">
-                                                                        <img src="{% static 'img/modal/start_time.svg' %}"
-                                                                             alt="">
+                                                                        <img class="start-button" data-timer-id="{{ task.id }}" src="{% static 'img/modal/start_time.svg' %}" alt="">
                                                                     </div>
                                                                     <div class="text-add-info">
-                                                                        <p>0:00:00</p>
+                                                                        <p class="timer-task" data-timer-id="{{ task.id }}">0:00:00</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -434,7 +481,7 @@
                                                                     <p>Время на выполнение</p>
                                                                 </div>
                                                                 <div class="line-two text-add-info">
-                                                                    <p>4 часа</p>
+                                                                    <p>{{ task.time_per_task }} часа</p>
                                                                 </div>
                                                             </div>
                                                             <div class="line line-modal"></div>
@@ -443,7 +490,7 @@
                                                                     <p>Менеджер задачи</p>
                                                                 </div>
                                                                 <div class="line-two text-add-info">
-                                                                    <p>Разаренов Иван дмитриевич</p>
+                                                                    <p>{{ task.author.first_name }} {{ task.author.last_name }}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -484,110 +531,6 @@
                                                                 </div>
 
                                                                 <div class="block-list-subtask">
-                                                                    <div class="block-main-subtask"
-                                                                         onclick="get_subtask_info(this)">
-                                                                        <div class="block-subtask">
-                                                                            <div>
-                                                                                <div class="block-checkbox-subtask">
-                                                                                    <input type="checkbox" value="True">
-                                                                                </div>
-                                                                                <div class="block-title-subtask">
-                                                                                    <p>Настройка сервера</p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div>
-                                                                                <div class="block-date-subtask">
-                                                                                    <p>22.10.2023</p>
-                                                                                </div>
-                                                                                <div class="block-image-subtask">
-                                                                                    <img class="image-subtask"
-                                                                                         src="{% static 'img/modal/button_down.svg' %}"
-                                                                                         alt=">">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="desc-subtask" style="display: none">
-                                                                            <p>Настройте сервер ребятки</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="block-main-subtask"
-                                                                         onclick="get_subtask_info(this)">
-                                                                        <div class="block-subtask">
-                                                                            <div>
-                                                                                <div class="block-checkbox-subtask">
-                                                                                    <input type="checkbox" value="True">
-                                                                                </div>
-                                                                                <div class="block-title-subtask">
-                                                                                    <p>Настройка сервера</p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div>
-                                                                                <div class="block-date-subtask">
-                                                                                    <p>22.10.2023</p>
-                                                                                </div>
-                                                                                <div class="block-image-subtask">
-                                                                                    <img class="image-subtask"
-                                                                                         src="{% static 'img/modal/button_down.svg' %}"
-                                                                                         alt=">">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="desc-subtask" style="display: none">
-                                                                            <p>Настройте сервер ребятки</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="block-main-subtask"
-                                                                         onclick="get_subtask_info(this)">
-                                                                        <div class="block-subtask">
-                                                                            <div>
-                                                                                <div class="block-checkbox-subtask">
-                                                                                    <input type="checkbox" value="True">
-                                                                                </div>
-                                                                                <div class="block-title-subtask">
-                                                                                    <p>Настройка сервера</p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div>
-                                                                                <div class="block-date-subtask">
-                                                                                    <p>22.10.2023</p>
-                                                                                </div>
-                                                                                <div class="block-image-subtask">
-                                                                                    <img class="image-subtask"
-                                                                                         src="{% static 'img/modal/button_down.svg' %}"
-                                                                                         alt=">">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="desc-subtask" style="display: none">
-                                                                            <p>Настройте сервер ребятки</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="block-main-subtask"
-                                                                         onclick="get_subtask_info(this)">
-                                                                        <div class="block-subtask">
-                                                                            <div>
-                                                                                <div class="block-checkbox-subtask">
-                                                                                    <input type="checkbox" value="True">
-                                                                                </div>
-                                                                                <div class="block-title-subtask">
-                                                                                    <p>Настройка сервера</p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div>
-                                                                                <div class="block-date-subtask">
-                                                                                    <p>22.10.2023</p>
-                                                                                </div>
-                                                                                <div class="block-image-subtask">
-                                                                                    <img class="image-subtask"
-                                                                                         src="{% static 'img/modal/button_down.svg' %}"
-                                                                                         alt=">">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="desc-subtask" style="display: none">
-                                                                            <p>Настройте сервер ребятки</p>
-                                                                        </div>
-                                                                    </div>
                                                                     <div class="block-main-subtask"
                                                                          onclick="get_subtask_info(this)">
                                                                         <div class="block-subtask">
