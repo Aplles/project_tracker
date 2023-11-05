@@ -2,8 +2,12 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views import View
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from service_objects.services import ServiceOutcome
 
+from api.services.task.change import TaskChangeService
 from api.services.task.create import TaskCreateService
 
 
@@ -16,3 +20,11 @@ class TaskCreateView(View):
             kwargs | request.POST.dict() | {"user": request.user}
         )
         return redirect('project_page', **kwargs)
+
+
+class TaskChangeView(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def post(self, request, *args, **kwargs):
+        outcome = ServiceOutcome(TaskChangeService, request.data | kwargs)
+        return Response({})

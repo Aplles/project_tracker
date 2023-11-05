@@ -9,6 +9,35 @@
 
 {% block script %}
     <script>
+        function change_status(block_li, task_id, current_col) {
+            let status_id = $(block_li).val();
+            $(`#text_status_${task_id}`).text(block_li.textContent);
+            $.ajax({
+                type: "POST",
+                url: `{% url 'change_task' project.id %}`,
+                data: JSON.stringify({
+                    status_id: status_id,
+                    task_id: task_id,
+                }),
+                contentType: "application/json",
+                dataType: "json",
+                success: function (response) {
+                    let $blockToMove = $(`#block_task_${task_id}`).detach();
+                    $blockToMove.appendTo(`#column_${status_id}`);
+
+                    let $count = $(`#count_task_${status_id}`);
+                    $count.text(Number($count.text()) + Number(1))
+                    let $cur_count = $(`#count_task_${current_col}`);
+                    $cur_count.text(Number($cur_count.text()) - Number(1))
+
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+             });
+            return false;
+        }
+
         function add_subtask_in_task(task_id) {
             let title = $(`#title-subtask-${task_id}`).val();
             let description = $(`#textarea-subtask_${task_id}`).val();
@@ -239,8 +268,6 @@
                 updateTimer(timer);
                 localStorage.setItem(`timer_interval_${timerId}`, interval);
             }
-
-            {#$("#myModal_2").show();#}
 
             const scrollContainer = document.getElementById('scroll-container');
             let isDragging = false;
@@ -629,7 +656,7 @@
                         </div>
                         <div class="container-column">
                             {% for dashboard in status %}
-                                <div class="column">
+                                <div class="column" id="column_{{ dashboard.id }}">
                                     <div
                                             class="block-status-task"
                                             style="box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 -4px 0 {{ dashboard.color }};"
@@ -638,12 +665,12 @@
                                             <p>{{ dashboard.status }}</p>
                                         </div>
                                         <div class="count-task-status">
-                                            <p>{{ dashboard.count_task }}</p>
+                                            <p id="count_task_{{ dashboard.id }}">{{ dashboard.count_task }}</p>
                                         </div>
                                     </div>
 
                                     {% for task in dashboard.tasks_status.all %}
-                                        <div class="block-task">
+                                        <div class="block-task" id="block_task_{{ task.id }}">
                                             <div class="task-url">
                                                 <div class="item-url">
                                                     <p>Пространства</p>
@@ -694,16 +721,14 @@
                                                         <div class="left-line-info-modal">
                                                             <div class="block-status-next">
                                                                 <div class="text-button-task">
-                                                                    <p>{{ dashboard.status }}</p>
+                                                                    <p id="text_status_{{ task.id }}">{{ dashboard.status }}</p>
                                                                 </div>
-                                                                <div class="arrow-button-task" onclick="toggleDropdown_task({{ dashboard.id }})">
+                                                                <div class="arrow-button-task" onclick="toggleDropdown_task({{ task.id }})">
                                                                     <img src="{% static 'img/modal/arrow-right.svg' %}"
                                                                          alt="">
-                                                                     <ul id="myDropdown_{{ dashboard.id }}" class="myDropdown">
+                                                                     <ul id="myDropdown_{{ task.id }}" class="myDropdown">
                                                                         {% for s in status %}
-                                                                            {% if s.status != dashboard.status %}
-                                                                                <li><a href="#">{{ s.status }}</a></li>
-                                                                            {% endif %}
+                                                                            <li onclick="change_status(this, {{ task.id }}, {{ dashboard.id }})" value="{{ s.id }}">{{ s.status }}</li>
                                                                         {% endfor %}
                                                                     </ul>
                                                                 </div>

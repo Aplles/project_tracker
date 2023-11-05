@@ -98,12 +98,15 @@ p {
 
 .header {
     height: 100vh;
-    background-color: black;
+    background-color: #020102;
+    overflow: hidden;
 }
 
 .main-container {
     width: 1440px;
     margin: 0 auto;
+    z-index: 1;
+    position: relative;
 }
 
 .header-line {
@@ -190,11 +193,9 @@ p {
     display: flex;
     align-items: center;
     margin: -300px 0 -200px 230px;
-}
-
-.header-image img {
-    max-width: 580px;
-    max-height: 580px;
+    position: absolute;
+    right: -16%;
+    z-index: -1;
 }
 
 .title-text {
