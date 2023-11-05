@@ -484,6 +484,7 @@ input {
     align-items: center;
     justify-content: space-between;
     padding: 0 15px;
+    cursor: pointer;
 }
 
 .create_task div {
@@ -501,6 +502,10 @@ input {
 
 .plus_task {
     margin-top: 1px;
+}
+
+.plus_task p {
+    cursor: pointer;
 }
 
 .red-line {
@@ -529,7 +534,7 @@ input {
     background-color: #fff;
     margin: 37px auto;
     width: 90.5%;
-    height: 890px;
+    height: 855px;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
@@ -971,7 +976,7 @@ input {
     line-height: normal;
 }
 
-#myDropdown {
+#myDropdown, .myDropdown {
     display: none;
     position: absolute;
     top: 130%;
@@ -986,26 +991,107 @@ input {
     border-radius: 10px;
 }
 
-#myDropdown li {
+#myDropdown li, .myDropdown li {
     padding: 15px;
     width: 100%;
     box-sizing: border-box;
 }
 
-#myDropdown li:hover {
+#myDropdown li:hover, .myDropdown li:hover{
     background-color: #ff3838;
     color: white;
 }
 
-#myDropdown li:first-child {
+#myDropdown li:first-child, .myDropdown li:first-child{
     border-radius: 9px 9px 0 0;
 }
 
-#myDropdown li:last-child {
+#myDropdown li:last-child, .myDropdown li:last-child {
     border-radius: 0 0 9px 9px;
 }
 
-#myDropdown a {
+#myDropdown a, .myDropdown a{
     text-decoration: none;
     color: #333;
+}
+
+.time_per_task {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    width: 40px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.title-task-create {
+    border-bottom: 1px solid #B7B7B7;
+    width: 50%;
+}
+
+#desc-task-create {
+    border-radius: 15px;
+    border: 1px solid #B7B7B7;
+    padding: 16px;
+    margin-top: 16px;
+    min-height: 90px;
+    width: 100%;
+}
+
+.button-create-task {
+    margin-left: 50px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.button-create-task button {
+    height: 30px;
+    background-color: #FF0000;
+    margin-right: 2px;
+    padding: 6px 40px;
+    border-radius: 10px;
+    color: white;
+}
+
+
+#modal_error {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal_content_error {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    text-align: center;
+}
+
+#close-modal-error {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+#close-modal-error:hover {
+    color: black;
 }

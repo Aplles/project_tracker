@@ -1,0 +1,29 @@
+{% load static %}
+<div class="block-main-subtask"
+     onclick="get_subtask_info(this)">
+    <div class="block-subtask">
+        <div>
+            <div class="block-checkbox-subtask">
+                <input type="checkbox" value="True">
+            </div>
+            <div class="block-title-subtask">
+                <p>{{ title }}</p>
+            </div>
+            <input type="hidden" name="subtask_{{ id }}_title" value="{{ title }}">
+        </div>
+        <div>
+            <div class="block-date-subtask">
+                <p>{{ created_at }}</p>
+            </div>
+            <div class="block-image-subtask">
+                <img class="image-subtask"
+                     src="{% static 'img/modal/button_down.svg' %}"
+                     alt=">">
+            </div>
+        </div>
+    </div>
+    <div class="desc-subtask" style="display: none">
+        <p>{{ description }}</p>
+        <input type="hidden" name="subtask_{{ id }}_description" value="{{ description }}">
+    </div>
+</div>
