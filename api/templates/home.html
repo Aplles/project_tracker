@@ -9,6 +9,15 @@
 
 {% block script %}
     <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById("myDropdown");
+            if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            } else {
+                dropdown.style.display = "block";
+            }
+        }
+
         function get_subtask_info(param) {
             let $param = $(param);
             let $descSubtask = $param.find('.desc-subtask');
@@ -54,14 +63,14 @@
 
         $(document).ready(function () {
 
-            function updateTimer(timer) {
+            function updateTimer(timer, reload=false) {
                 const timerId = $(timer).data("timer-id");
                 const timerData = JSON.parse(localStorage.getItem(`timer_${timerId}`)) || {
                     hours: 0,
                     minutes: 0,
                     seconds: 0,
                 };
-                timerData.seconds++;
+
                 if (timerData.seconds === 60) {
                     timerData.seconds = 0;
                     timerData.minutes++;
@@ -69,6 +78,9 @@
                 if (timerData.minutes === 60) {
                     timerData.minutes = 0;
                     timerData.hours++;
+                }
+                if (!reload) {
+                     timerData.seconds++;
                 }
                 const formattedTime = `${timerData.hours.toString().padStart(2, "0")}:${timerData.minutes.toString().padStart(2, "0")}:${timerData.seconds.toString().padStart(2, "0")}`;
                 $(timer).text(formattedTime);
@@ -86,7 +98,7 @@
                     startTimer(this, timerId);
                 }
                 else {
-                    updateTimer(this);
+                    updateTimer(this, true);
                 }
             });
 
@@ -118,7 +130,7 @@
                 localStorage.setItem(`timer_interval_${timerId}`, interval);
             }
 
-            {#$("#myModal_2").show();#}
+            $("#myModal_2").show();
 
             const scrollContainer = document.getElementById('scroll-container');
             let isDragging = false;
@@ -374,21 +386,21 @@
                             </div>
                         </div>
                         <div class="container-column">
-                            {% for s in status %}
+                            {% for dashboard in status %}
                                 <div class="column">
                                     <div
                                             class="block-status-task"
-                                            style="box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 -4px 0 {{ s.color }};"
+                                            style="box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 -4px 0 {{ dashboard.color }};"
                                     >
                                         <div class="title-status">
-                                            <p>{{ s.status }}</p>
+                                            <p>{{ dashboard.status }}</p>
                                         </div>
                                         <div class="count-task-status">
-                                            <p>{{ s.count_task }}</p>
+                                            <p>{{ dashboard.count_task }}</p>
                                         </div>
                                     </div>
 
-                                    {% for task in s.tasks_status.all %}
+                                    {% for task in dashboard.tasks_status.all %}
                                         <div class="block-task">
                                             <div class="task-url">
                                                 <div class="item-url">
@@ -404,9 +416,9 @@
                                                     <img src="{% static 'img/arrow_url.svg' %}" alt="">
                                                 </div>
                                                 <div class="item-url">
-                                                    <p>{{ s.status }}</p>
+                                                    <p>{{ dashboard.status }}</p>
                                                 </div>
-                                                <div style="background-color: {{ s.color }};"
+                                                <div style="background-color: {{ dashboard.color }};"
                                                      class="item-url color-item"></div>
                                             </div>
                                             <div class="line-task">
@@ -440,11 +452,18 @@
                                                         <div class="left-line-info-modal">
                                                             <div class="block-status-next">
                                                                 <div class="text-button-task">
-                                                                    <p>{{ s.status }}</p>
+                                                                    <p>{{ dashboard.status }}</p>
                                                                 </div>
-                                                                <div class="arrow-button-task">
+                                                                <div class="arrow-button-task" onclick="toggleDropdown()">
                                                                     <img src="{% static 'img/modal/arrow-right.svg' %}"
                                                                          alt="">
+                                                                     <ul id="myDropdown">
+                                                                        {% for s in status %}
+                                                                            {% if s.status != dashboard.status %}
+                                                                                <li><a href="#">{{ s.status }}</a></li>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </ul>
                                                                 </div>
                                                             </div>
                                                             <div class="avatars-developed">
@@ -544,20 +563,21 @@
                                                                 </div>
 
                                                                 <div class="block-list-subtask">
-                                                                    <div class="block-main-subtask"
+                                                                    {% for subtask in task.subtasks_task.all %}
+                                                                        <div class="block-main-subtask"
                                                                          onclick="get_subtask_info(this)">
                                                                         <div class="block-subtask">
                                                                             <div>
                                                                                 <div class="block-checkbox-subtask">
-                                                                                    <input type="checkbox" value="True">
+                                                                                    <input type="checkbox" value="True" {% if subtask.is_done %}checked{% endif %}>
                                                                                 </div>
                                                                                 <div class="block-title-subtask">
-                                                                                    <p>Настройка сервера</p>
+                                                                                    <p>{{ subtask.title }}</p>
                                                                                 </div>
                                                                             </div>
                                                                             <div>
                                                                                 <div class="block-date-subtask">
-                                                                                    <p>22.10.2023</p>
+                                                                                    <p>{{ subtask.created_at|date:"d.m.Y" }}</p>
                                                                                 </div>
                                                                                 <div class="block-image-subtask">
                                                                                     <img class="image-subtask"
@@ -567,43 +587,19 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="desc-subtask" style="display: none">
-                                                                            <p>Настройте сервер ребятки</p>
+                                                                            <p>{{ subtask.description }}</p>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="block-main-subtask"
-                                                                         onclick="get_subtask_info(this)">
-                                                                        <div class="block-subtask">
-                                                                            <div>
-                                                                                <div class="block-checkbox-subtask">
-                                                                                    <input type="checkbox" value="True">
-                                                                                </div>
-                                                                                <div class="block-title-subtask">
-                                                                                    <p>Настройка сервера</p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div>
-                                                                                <div class="block-date-subtask">
-                                                                                    <p>22.10.2023</p>
-                                                                                </div>
-                                                                                <div class="block-image-subtask">
-                                                                                    <img class="image-subtask"
-                                                                                         src="{% static 'img/modal/button_down.svg' %}"
-                                                                                         alt=">">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="desc-subtask" style="display: none">
-                                                                            <p>Настройте сервер ребятки</p>
-                                                                        </div>
-                                                                    </div>
+                                                                    {% endfor %}
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="block-chat-modal">
-                                                            <div class="block-message">
-                                                                <p class="text-message">Максим Караичев создал
-                                                                    задачу</p>
-                                                            </div>
+                                                            {% for comment in task.comments_task.all %}
+                                                                <div class="block-message">
+                                                                    <p class="text-message">{{ comment.text }}</p>
+                                                                </div>
+                                                            {% endfor %}
                                                         </div>
                                                     </div>
                                                     <div class="footer-info-modal">

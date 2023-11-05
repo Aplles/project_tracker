@@ -20,7 +20,7 @@ class ProjectPageView(View):
     def get(self, request, *args, **kwargs):
         project = Project.objects.get(id=kwargs["id"])
         return render(request, 'home.html', context={
-            'status': Dashboard.objects.annotate(
+            'status': Dashboard.objects.prefetch_related('tasks_status').annotate(
                 count_task=Count('tasks_status')
             ).filter(project=project).order_by('position'),
             'project': project,

@@ -610,6 +610,7 @@ input {
     background-color: #FF0000;
     border-radius: 0 10px 10px 0;
     padding: 12px;
+    position: relative;
 }
 
 .arrow-button-task img {
@@ -968,4 +969,43 @@ input {
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+}
+
+#myDropdown {
+    display: none;
+    position: absolute;
+    top: 130%;
+    left: 0;
+    background-color: white;
+    z-index: 1;
+    border: 1px solid #ccc;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 150px;
+    border-radius: 10px;
+}
+
+#myDropdown li {
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#myDropdown li:hover {
+    background-color: #ff3838;
+    color: white;
+}
+
+#myDropdown li:first-child {
+    border-radius: 9px 9px 0 0;
+}
+
+#myDropdown li:last-child {
+    border-radius: 0 0 9px 9px;
+}
+
+#myDropdown a {
+    text-decoration: none;
+    color: #333;
 }
