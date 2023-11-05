@@ -541,7 +541,7 @@ input {
 }
 
 .header-line-modal {
-    height: 65px;
+    height: 75px;
     border-bottom: 1px solid #B7B7B7;
     display: flex;
     align-items: center;
@@ -752,7 +752,7 @@ input {
 .footer-info-modal {
     display: flex;
     align-items: center;
-    height: 55px;
+    height: 75px;
     border-top: 1px solid #B7B7B7;
     margin-top: auto;
     box-shadow: 0 -5px 15px 0 rgba(0, 0, 0, 0.15)

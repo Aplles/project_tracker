@@ -9,60 +9,64 @@
 
 {% block script %}
     <script>
-        function change_status(block_li, task_id, current_col) {
-            let status_id = $(block_li).val();
-            $(`#text_status_${task_id}`).text(block_li.textContent);
-            $.ajax({
-                type: "POST",
-                url: `{% url 'change_task' project.id %}`,
-                data: JSON.stringify({
-                    status_id: status_id,
-                    task_id: task_id,
-                }),
-                contentType: "application/json",
-                dataType: "json",
-                success: function (response) {
-                    let $blockToMove = $(`#block_task_${task_id}`).detach();
-                    $blockToMove.appendTo(`#column_${status_id}`);
+        {% if project %}
+            function change_status(block_li, task_id, current_col) {
+                let status_id = $(block_li).val();
+                $(`#text_status_${task_id}`).text(block_li.textContent);
+                $.ajax({
+                    type: "POST",
+                    url: `{% url 'change_task' project.id %}`,
+                    data: JSON.stringify({
+                        status_id: status_id,
+                        task_id: task_id,
+                    }),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (response) {
 
-                    let $count = $(`#count_task_${status_id}`);
-                    $count.text(Number($count.text()) + Number(1))
-                    let $cur_count = $(`#count_task_${current_col}`);
-                    $cur_count.text(Number($cur_count.text()) - Number(1))
+                        let $blockToMove = $(`#block_task_${task_id}`).detach();
+                        $blockToMove.appendTo(`#column_${status_id}`);
 
-                },
-                error: function (response) {
-                    console.log(response);
-                }
-             });
-            return false;
-        }
+                        let $count = $(`#count_task_${status_id}`);
+                        $count.text(Number($count.text()) + Number(1))
+                        let $cur_count = $(`#count_task_${current_col}`);
+                        $cur_count.text(Number($cur_count.text()) - Number(1))
 
-        function add_subtask_in_task(task_id) {
-            let title = $(`#title-subtask-${task_id}`).val();
-            let description = $(`#textarea-subtask_${task_id}`).val();
-            $.ajax({
-                type: "POST",
-                url: "{% url 'create_subtask' project.id %}",
-                data: JSON.stringify({
-                    title: title,
-                    description: description,
-                    task: task_id
-                }),
-                contentType: "application/json",
-                dataType: "json",
-                success: function (response) {
-                    console.log(getCurrentDate(response.created_at));
-                    $(`#list-subtask-${task_id}`).append(`{% include 'include/subtask.html' with id="${task_id}" title="${title}" description="${description}" created_at="${getCurrentDate(response.created_at)}" %}`)
-                    $(`#title-subtask-${task_id}`).val("");
-                    $(`#textarea-subtask_${task_id}`).val("");
-                },
-                error: function (response) {
-                    console.log(response);
-                }
-             });
-            return false;
-        }
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                 });
+                return false;
+            }
+
+            function add_subtask_in_task(task_id) {
+
+                let title = $(`#title-subtask-${task_id}`).val();
+                let description = $(`#textarea-subtask_${task_id}`).val();
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'create_subtask' project.id %}",
+                    data: JSON.stringify({
+                        title: title,
+                        description: description,
+                        task: task_id
+                    }),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(getCurrentDate(response.created_at));
+                        $(`#list-subtask-${task_id}`).append(`{% include 'include/subtask.html' with id="${task_id}" title="${title}" description="${description}" created_at="${getCurrentDate(response.created_at)}" %}`)
+                        $(`#title-subtask-${task_id}`).val("");
+                        $(`#textarea-subtask_${task_id}`).val("");
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                 });
+                return false;
+            }
+        {% endif %}
 
         function toggleDropdown_task(id_drop) {
             const dropdown = document.getElementById(`myDropdown_${id_drop}`);
@@ -93,8 +97,8 @@
 
         function getCurrentDate() {
             const now = new Date();
-            const day = now.getDate().toString().padStart(2, '0'); // Получаем день и форматируем его с ведущим нулем, если нужно
-            const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Получаем месяц (начинается с 0) и форматируем с ведущим нулем
+            const day = now.getDate().toString().padStart(2, '0');
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
             const year = now.getFullYear();
             return `${day}.${month}.${year}`;
         }
@@ -159,9 +163,11 @@
         }
 
         $(document).on('click', function(event) {
+            console.log(modalOpen)
             if (modalOpen && !$(event.target).closest(".modal-content").length) {
                 try {
                     $(`#${event.target.id}`).hide();
+                    modalOpen = false;
                 }
                 catch (Exception) {
                 }
@@ -517,7 +523,11 @@
                                 </div>
                             </div>
                             <div id="myModal_new_task" class="modal">
-                                <form action="{% url 'create_task' project.id %}" method="post">
+                                {% if project %}
+                                    <form action="{% url 'create_task' project.id %}" method="post">
+                                {% else %}
+                                    <form action="#" method="post">
+                                {% endif %}
                                     {% csrf_token %}
                                     <div id="modal-content-create" class="modal-content">
                                         <div class="header-line-modal">
