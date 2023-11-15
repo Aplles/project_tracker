@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        function swipe_auth(button) {
+            let $auth = $("#auth");
+            $auth.empty();
+            let second_button = null;
+            button.classList.remove('inactive-btn');
+            button.classList.add('active-btn');
+            if (button.id === "reg_button") {
+                second_button = document.getElementById('login_button');
+                $auth.append(`{% include "include/register.html" %}`)
+            } else {
+                second_button = document.getElementById('reg_button');
+                $auth.append(`{% include "include/login.html" %}`)
+            }
+            second_button.classList.remove('active-btn');
+            second_button.classList.add('inactive-btn');
+
+        }
+
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="main-container-auth">
+        <div class="big-logo">
+            <img src="{% static 'img/big_logo.svg' %}" alt="">
+        </div>
+
+        <div class="header-auth">
+            <div class="header-logo">
+                <div class="image-logo">
+                    <img src="{% static 'img/logo.svg' %}" alt="">
+                </div>
+                <div class="text-logo">
+                    <p class="text-auth">ProjectTracker</p>
+                </div>
+            </div>
+            <div class="header-back">
+                <a class="text-auth" href="#">Выйти</a>
+            </div>
+        </div>
+
+        <div class="block-auth">
+            <div class="list-buttons">
+                <div>
+                    <button class="btn-auth active-btn"
+                            id="login_button"
+                            onclick="swipe_auth(this)">
+                        Авторизация
+                    </button>
+                </div>
+                <div>
+                    <button class="btn-auth inactive-btn"
+                            id="reg_button"
+                            onclick="swipe_auth(this)">
+                        Регистрация
+                    </button>
+                </div>
+            </div>
+            <div class="block-error">
+                <p>{{ error }}</p>
+            </div>
+            <div id="auth">
+                {% include 'include/login.html' %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

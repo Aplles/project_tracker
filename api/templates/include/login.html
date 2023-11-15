@@ -1,0 +1,24 @@
+<form action="{% url 'auth' %}" method="post">
+    <input type="hidden" name="type_auth" value="login">
+    <div class="inputs-auth">
+        <div>
+            <div>
+                <label class="label-auth" for="login">Логин</label>
+            </div>
+            <div class="block-input">
+                <input class="input-auth" type="text" id="login">
+            </div>
+        </div>
+        <div>
+            <div>
+                <label class="label-auth" for="pass">Пароль</label>
+            </div>
+            <div class="block-input">
+                <input class="input-auth" type="password" id="pass">
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn-auth btn-auth-submit active-btn">Войти</button>
+    </div>
+</form>
