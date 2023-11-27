@@ -1,12 +1,13 @@
 <form action="{% url 'auth' %}" method="post">
+    {% csrf_token %}
     <input type="hidden" name="type_auth" value="login">
     <div class="inputs-auth">
         <div>
             <div>
-                <label class="label-auth" for="login">Логин</label>
+                <label class="label-auth" for="login">Почта</label>
             </div>
             <div class="block-input">
-                <input class="input-auth" type="text" id="login">
+                <input class="input-auth" type="email" id="login" name="login">
             </div>
         </div>
         <div>
@@ -14,7 +15,7 @@
                 <label class="label-auth" for="pass">Пароль</label>
             </div>
             <div class="block-input">
-                <input class="input-auth" type="password" id="pass">
+                <input class="input-auth" type="password" id="pass" name="password_1">
             </div>
         </div>
     </div>

@@ -11,6 +11,7 @@
     <script>
 
         function swipe_auth(button) {
+            $("#errors").empty();
             let $auth = $("#auth");
             $auth.empty();
             let second_button = null;
@@ -43,11 +44,8 @@
                     <img src="{% static 'img/logo.svg' %}" alt="">
                 </div>
                 <div class="text-logo">
-                    <p class="text-auth">ProjectTracker</p>
+                    <a href="{% url 'index' %}"><p class="text-auth">ProjectTracker</p></a>
                 </div>
-            </div>
-            <div class="header-back">
-                <a class="text-auth" href="#">Выйти</a>
             </div>
         </div>
 
@@ -68,8 +66,10 @@
                     </button>
                 </div>
             </div>
-            <div class="block-error">
-                <p>{{ error }}</p>
+            <div id="errors" class="block-error">
+                {% for key, value in errors.items  %}
+                    <p>{{value}}</p>
+                {% endfor %}
             </div>
             <div id="auth">
                 {% include 'include/login.html' %}

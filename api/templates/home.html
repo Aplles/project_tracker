@@ -163,7 +163,6 @@
         }
 
         $(document).on('click', function(event) {
-            console.log(modalOpen)
             if (modalOpen && !$(event.target).closest(".modal-content").length) {
                 try {
                     $(`#${event.target.id}`).hide();
@@ -356,6 +355,10 @@
             }
 
             $(document).on('click', '.get_projects', function (e) {
+                let target = $(e.target);
+                if (target.hasClass('add-project')) {
+                    return;
+                }
                 let list_projects = $("#list_projects");
                 if (list_projects.is(':empty')) {
                     get_projects(list_projects);
@@ -364,8 +367,43 @@
                     $("#image-storage").attr("src", "{% static 'img/Arrow_close.svg' %}");
                 }
             });
+
             get_projects($("#list_projects"));
 
+            $('#selectFileDiv').on('click', function() {
+                $('#fileInput').click();
+            });
+            $('#fileInput').on('change', function() {
+                let selectedFile = $(this)[0].files[0];
+                if (selectedFile) {
+                    let fileblock = $('#selectFileDiv');
+                    fileblock.empty();
+                    fileblock.append(`<div class="text-image">${selectedFile.name}</div>`);
+                    let name_project = $("#name-project");
+                    if (name_project.val()) {
+                        let createProjectBtn = $("#create-project-btn");
+                        createProjectBtn.removeAttr("disabled");
+                        createProjectBtn.removeClass("btn-disabled");
+                        createProjectBtn.text("Создать пространство")
+                    }
+                }
+            });
+
+            $('#name-project').on('input', function(e) {
+                let createProjectBtn = $("#create-project-btn");
+                let selectedFile = $("#fileInput")[0].files[0];
+
+                if (e.target.value && selectedFile) {
+                    createProjectBtn.removeAttr("disabled");
+                    createProjectBtn.removeClass("btn-disabled");
+                    createProjectBtn.text("Создать пространство")
+                }
+                else {
+                    createProjectBtn.attr("disabled", "disabled");
+                    createProjectBtn.addClass("btn-disabled");
+                    createProjectBtn.text("Заполните поля");
+                }
+            });
         });
 
     </script>
@@ -450,14 +488,43 @@
             <div class="block-favorite get_projects">
                 <div class="flex-block inner-favorite">
                     <h1>Пространства</h1>
+                    <p class="add-project">+</p>
                     <img id="image-storage" src="{% static 'img/Arrow_close.svg' %}" alt=""/>
                 </div>
             </div>
+
+            <form action="{% url 'create_task' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="create-project-block">
+                    <div class="text-create">
+                        <h1>Название</h1>
+                    </div>
+                    <div class="block-input-name">
+                        <input id="name-project" name="name" class="input-name-project" type="text">
+                    </div>
+                    <div class="text-create">
+                        <h1>Фото</h1>
+                    </div>
+                    <input type="file" id="fileInput" name="image" hidden>
+                    <div class="select-image" id="selectFileDiv">
+                        <div>
+                            <img class="plus-image" src="{% static 'img/plus.svg' %}" alt="...">
+                        </div>
+                        <div>
+                            <p>Выбрать файл</p>
+                        </div>
+                    </div>
+                    <button id="create-project-btn" class="btn-logout btn-create btn-disabled" disabled>Заполните поля</button>
+                </div>
+            </form>
+
             <div id="list_projects"></div>
 
 
             <div class="block-logout">
-                <button class="btn-logout">Выйти</button>
+                <a href="{% url 'logout' %}">
+                    <button class="btn-logout">Выйти</button>
+                </a>
             </div>
 
         </div>

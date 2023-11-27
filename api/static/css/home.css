@@ -999,13 +999,13 @@ input {
     cursor: pointer;
 }
 
-#myDropdown li:hover, .myDropdown li:hover{
+#myDropdown li:hover, .myDropdown li:hover {
     background-color: #ff3838;
     color: white;
     cursor: pointer;
 }
 
-#myDropdown li:first-child, .myDropdown li:first-child{
+#myDropdown li:first-child, .myDropdown li:first-child {
     border-radius: 9px 9px 0 0;
 }
 
@@ -1013,7 +1013,7 @@ input {
     border-radius: 0 0 9px 9px;
 }
 
-#myDropdown a, .myDropdown a{
+#myDropdown a, .myDropdown a {
     text-decoration: none;
     color: #333;
 }
@@ -1097,4 +1097,76 @@ input[type="number"] {
 
 #close-modal-error:hover {
     color: black;
+}
+
+.add-project {
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: auto;
+    padding-left: 12px;
+}
+
+
+.create-project-block {
+    border-radius: 10px;
+    border: 1px solid #D9D9D9;
+    margin: 15px 20px 15px 24px;
+    padding: 6px 13px 9px 13px;
+}
+
+.text-create {
+    color: #53575E;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-left: 15px;
+    margin-bottom: 6px;
+    margin-top: 6px;
+}
+
+.input-name-project {
+    border-radius: 10px;
+    border: 1px solid #D9D9D9;
+    width: 100%;
+    height: 30px;
+    padding-left: 10px;
+    box-sizing: border-box;
+}
+
+.select-image {
+    border-radius: 10px;
+    border: 1px solid #D9D9D9;
+    display: inline-flex;
+    align-items: center;
+    height: 30px;
+}
+
+.select-image div {
+    display: flex;
+    align-items: center;
+}
+
+.select-image div:first-child {
+    margin-left: 14px;
+}
+
+.select-image div:last-child {
+    margin-left: 7px;
+    margin-right: 14px;
+}
+
+.btn-create {
+    border-radius: 10px;
+    height: 30px;
+    margin-top: 10px;
+}
+
+.text-image {
+    margin: 0 18px !important;
+}
+
+.btn-disabled {
+    background-color: #cb0000;
 }

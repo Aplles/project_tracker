@@ -50,9 +50,19 @@
                 <div class="header-item">
                     <button class="btn_custom create-project">Создать проект</button>
                 </div>
-                <div class="header-item push-right">
-                    <button class="btn_custom btn_red">Войти</button>
-                </div>
+                {% if user.is_authenticated %}
+                    <div class="header-item push-right">
+                        <a href="{% url 'logout' %}">
+                            <button class="btn_custom btn_red">Выйти</button>
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="header-item push-right">
+                        <a href="{% url 'auth' %}">
+                            <button class="btn_custom btn_red">Войти</button>
+                        </a>
+                    </div>
+                {% endif %}
             </div>
 
             <div class="header-info">
