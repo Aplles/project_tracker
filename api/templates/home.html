@@ -9,6 +9,10 @@
 
 {% block script %}
     <script>
+        function open_create_status(modal) {
+            $("#modal_create_status").addClass("display_modal");
+        }
+
         {% if project %}
             function change_status(block_li, task_id, current_col) {
                 let status_id = $(block_li).val();
@@ -170,6 +174,12 @@
                 }
                 catch (Exception) {
                 }
+            }
+            if ($("#modal_create_status").hasClass('display_modal') && 
+            event.target != document.getElementById("create_status") &&
+            event.target == document.getElementById("modal_create_status")
+            ) {
+                $("#modal_create_status").removeClass("display_modal");
             }
         });
 
@@ -956,6 +966,20 @@
                                     {% endfor %}
                                 </div>
                             {% endfor %}
+                            <div
+                                    class="block-status-task block-add-status"
+                                    style="box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 -4px 0 red;"
+                                    onclick="open_create_status(this)"
+                                    id="create_status"
+                            >
+                                <div class="title-status add-status">
+                                    <p>Добавить статус</p>
+                                </div>
+                                <div class="count-task-status">
+                                    <p>0</p>
+                                </div>
+                            </div>
+                            {% include 'include/modal.html' %}
                         </div>
                     </div>
                 </div>
