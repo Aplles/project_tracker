@@ -1,20 +1,23 @@
-<div id="modal_create_status" class="modal">
-    <div class="modal_content">
-        <div class="block-create-status">
-            <p>Название статуса</p> 
-        </div>
-        <div class="block-create-status">
-            <input class="input_status" type="text" name="status">
-        </div>
-        <div class="block-create-status">
-            <p>Выберите цвет</p> 
-        </div>
-        <div class="block-input-color block-create-status">
-            <input type="color" name="color" id="primary_color">
-        </div>
-        <div class="block-create-status">
-            <button class="btn-logout btn-save">Сохранить</button>
+<form action="{% url 'create_dashboard' project_id %}" method="post">
+    {% csrf_token %}
+    <div id="modal_create_status" class="modal">
+        <div class="modal_content">
+            <div class="block-create-status">
+                <p>Название статуса</p>
+            </div>
+            <div class="block-create-status">
+                <input class="input_status" type="text" name="status">
+            </div>
+            <div class="block-create-status">
+                <p>Выберите цвет</p>
+            </div>
+            <div class="block-input-color block-create-status">
+                <input type="color" name="color" id="primary_color">
+            </div>
+            <div class="block-create-status">
+                <button class="btn-logout btn-save">Сохранить</button>
+            </div>
         </div>
     </div>
-</div>
+</form>
 

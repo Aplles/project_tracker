@@ -782,12 +782,11 @@
                                                     <p>{{ task.title }}</p>
                                                 </div>
                                                 <div class="avatar-user-container">
-                                                    {% for foo in "123" %}
-                                                        <div class="avatar-user"></div>
+                                                    {% for item in task.tasks_task.all %}
+                                                        <div class="avatar-user">
+                                                            <img src="{{ item.user.avatar.url }}" alt="">
+                                                        </div>
                                                     {% endfor %}
-                                                    <div>
-                                                        <div class="avatar-user">5+</div>
-                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="link-redaction">
@@ -821,16 +820,15 @@
                                                                 </div>
                                                             </div>
                                                             <div class="avatars-developed">
-                                                                {% for foo in "123" %}
-                                                                    <div class="avatar-developed">
-                                                                        <img src="{% static 'img/default.jpg' %}"
-                                                                             alt="">
-                                                                    </div>
-                                                                {% endfor %}
-                                                                <div>
-                                                                    <img src="{% static 'img/modal/add_people.svg' %}"
-                                                                         alt="">
+                                                            {% for item in task.tasks_task.all %}
+                                                                <div class="avatar-developed">
+                                                                    <img src="{{ item.user.avatar.url }}" alt="">
                                                                 </div>
+                                                            {% endfor %}
+{#                                                                <div>#}
+{#                                                                    <img src="{% static 'img/modal/add_people.svg' %}"#}
+{#                                                                         alt="">#}
+{#                                                                </div>#}
                                                             </div>
                                                             <div class="menu-info-modal">
                                                                 <div class="circle"></div>
@@ -966,21 +964,24 @@
                                     {% endfor %}
                                 </div>
                             {% endfor %}
-                            <div
-                                    class="block-status-task block-add-status"
-                                    style="box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 -4px 0 red;"
-                                    onclick="open_create_status(this)"
-                                    id="create_status"
-                            >
-                                <div class="title-status add-status">
-                                    <p>Добавить статус</p>
+
+                            {% if project %}
+                                <div
+                                        class="block-status-task block-add-status"
+                                        style="box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 -4px 0 red;"
+                                        onclick="open_create_status(this)"
+                                        id="create_status"
+                                >
+                                        <div class="title-status add-status">
+                                            <p>Добавить статус</p>
+                                        </div>
+                                        <div class="count-task-status">
+                                            <p>0</p>
+                                        </div>
+                                    </div>
+                                    {% include 'include/modal.html' with project_id=project.id %}
                                 </div>
-                                <div class="count-task-status">
-                                    <p>0</p>
-                                </div>
-                            </div>
-                            {% include 'include/modal.html' %}
-                        </div>
+                            {% endif %}
                     </div>
                 </div>
             </div>
