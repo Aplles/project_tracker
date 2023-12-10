@@ -31,6 +31,9 @@ class Task(models.Model):
         verbose_name='Менеджер задачи'
     )
 
+    def members(self):
+        return self.tasks_task.all()
+
     def __str__(self):
         return f'{self.project} - {self.title}'
 

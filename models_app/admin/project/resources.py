@@ -10,12 +10,14 @@ class TaskInline(admin.TabularInline):
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = [
+    list_display = (
         'id',
         'name',
-    ]
+        'uuid',
+    )
     list_display_links = (
         'id',
     )
+    readonly_fields = ('uuid', )
     inlines = (TaskInline,)
     ordering = ('id', 'name',)

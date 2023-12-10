@@ -2,6 +2,7 @@ from functools import lru_cache
 
 from django import forms
 from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import Token
 from service_objects.services import ServiceWithResult
 
 from models_app.models import User
@@ -39,11 +40,13 @@ class UserAuthService(ServiceWithResult):
 
     def _register(self):
         if not self.errors:
-            return User.objects.create_user(
+            user = User.objects.create_user(
                 email=self.cleaned_data.get('login'),
                 username=self.cleaned_data.get('login'),
                 password=self.cleaned_data.get('password_1')
             )
+            Token.objects.create(user=user)
+            return user
         return self.errors
 
     def user_presence(self):

@@ -14,6 +14,7 @@ class UserAdmin(admin.ModelAdmin):
                     'username',
                     'password',
                     'avatar',
+                    'role',
                 ]
             }
         ),

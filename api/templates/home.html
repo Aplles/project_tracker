@@ -416,13 +416,14 @@
                             let url = ("{% url 'project_page' 0 %}" + response[i].project.id + "/").replace('/0/', '/');
                             let image = response[i].project.image;
                             let title = response[i].project.name;
-                            list_projects.append(`{% include 'include/project.html' with img="${image}" title="${title}" url="${url}" %}`);
+                            let id = response[i].project.id;
+                            list_projects.append(`{% include 'include/project.html' with id="${id}" img="${image}" title="${title}" url="${url}" %}`);
                             setTimeout(function () {
                                 list_projects.find('.project-item').eq(i).addClass("expanded");
                             }, 40 * i);
                         }
                         $("#image-storage").attr("src", "{% static 'img/Arrow_open.svg' %}");
-                        $(`#{{ project.name }}`).addClass('red-line');
+                        $(`#{{ project.id }}`).addClass('red-line');
                     },
                     error: function (response) {
                         console.log(response);
@@ -503,12 +504,67 @@
 
         <div class="line"></div>
 
-        <div class="flex-block">
+        <div class="flex-block" onclick="show_members()">
             <div class="icon-header">
                 <img src="{% static 'img/list.svg' %}" alt=""/>
             </div>
             <div>
-                <p class="text-header">Список</p>
+                <p class="text-header">Участники</p>
+            </div>
+        </div>
+        <script>
+            function show_members() {
+                let popup = document.getElementById("members");
+                popup.style.display = "block";
+            }
+
+            function close_members() {
+                let popup = document.getElementById("members");
+                popup.style.display = "none";
+            }
+            {% if project %}
+                function remove_member(member_id) {
+                    $.ajax({
+                        type: "POST",
+                        url: `{% url 'remove_user' project.id 0 %}`.replace(0, member_id),
+                        data: JSON.stringify({}),
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function (response) {
+                            $(`#member_${member_id}`).remove()
+                        },
+                        error: function (response) {
+                            console.log(response);
+                        }
+                     });
+                    return false;
+                }
+            {% endif %}
+        </script>
+        <div id="members" class="popup">
+            <div class="close_members">
+                <img onclick="close_members()" src="{% static 'img/modal/close.svg' %}" alt="x">
+            </div>
+            <div class="list-members">
+                <div class="text-members">
+                    <h1>Список участников: </h1>
+                </div>
+                {% for item in project.users_project.all %}
+                    <div class="item-member" id="member_{{ item.user.id }}">
+                        <div class="left-block-member">
+                            <div class="name-member">
+                                <img class="img-member" src="{{ item.user.avatar.url }}" alt="a">
+                                {{ item.user.last_name }} {{ item.user.first_name }}
+                            </div>
+                            <div class="count_task">
+                                <p>Количество закрепленных задач: {{ item.count_tasks }}</p>
+                            </div>
+                        </div>
+                        <div class="delete_member">
+                            <button class="remove-user" onclick="remove_member({{ item.user.id }})">Удалить</button>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
 
@@ -528,9 +584,49 @@
             <div class="icon-header">
                 <img src="{% static 'img/share.svg' %}" alt=""/>
             </div>
-            <div class="share-text">
+            <div class="share-text" onclick="showPopup()">
                 <p class="text-header">Поделиться</p>
             </div>
+        </div>
+    </div>
+    {% if project %}
+        <script>
+            function showPopup() {
+                let protocol = window.location.protocol;
+                let host = window.location.host;
+                let url = `${protocol}//${host}{% url 'invite_project' project.uuid %}`;
+                $("#link_to_project").text(url);
+                copyToClipboard(url);
+                let popup = document.getElementById("myPopup");
+                popup.style.display = "block";
+                setTimeout(function () {
+                    popup.style.display = "none";
+                }, 4000);
+            }
+
+            function copyToClipboard(textToCopy) {
+                let tempInput = document.createElement("textarea");
+                tempInput.value = textToCopy;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+            }
+        </script>
+    {% endif %}
+
+    <div id="myPopup" class="popup">
+        <div class="header-link-popup">
+            <h1>Ссылка на приглашение:</h1>
+        </div>
+        <div class="body-link-popup">
+            <p id="link_to_project">/project/link/invite/53fc7e7a-b18d-4662-a557-b3e9e359e62a/</p>
+        </div>
+        <div class="footer-link-popup">
+            <p>Отправьте её члену команды, которого хотите пригласить</p>
+        </div>
+        <div class="footer-link-popup">
+            <p>Она автоматически скопирована в ваш буфер обмена</p>
         </div>
     </div>
 
@@ -545,22 +641,22 @@
                 />
             </div>
 
-            <div class="flex-block block-link">
-                <img src="{% static 'img/home.svg' %}" alt=""/>
-                <p>Главная</p>
-            </div>
-
-            <div class="flex-block block-link">
-                <img src="{% static 'img/notification.svg' %}" alt="" class="img-notif"/>
-                <p>Уведомления</p>
-            </div>
-
-            <div class="block-favorite">
-                <div class="flex-block inner-favorite">
-                    <h1>Избранное</h1>
-                    <img src="{% static 'img/Arrow_close.svg' %}" alt=""/>
+            <a href="{% url 'index' %}">
+                <div class="flex-block block-link">
+                    <img src="{% static 'img/home.svg' %}" alt=""/>
+                    <p>Главная</p>
                 </div>
-            </div>
+            </a>
+{#            <div class="flex-block block-link">#}
+{#                <img src="{% static 'img/notification.svg' %}" alt="" class="img-notif"/>#}
+{#                <p>Уведомления</p>#}
+{#            </div>#}
+{#            <div class="block-favorite">#}
+{#                <div class="flex-block inner-favorite">#}
+{#                    <h1>Избранное</h1>#}
+{#                    <img src="{% static 'img/Arrow_close.svg' %}" alt=""/>#}
+{#                </div>#}
+{#            </div>#}
 
             <div class="block-favorite get_projects">
                 <div class="flex-block inner-favorite">
@@ -616,40 +712,40 @@
                     />
                 </div>
                 <div class="line line-in-filter"></div>
-                <div class="block-with-list-filters">
-                    <div class="filter-item">
-                        <div>
-                            <img class="image-filter" src="{% static 'img/filters/filters.svg' %}" alt="">
-                        </div>
-                        <div class="text-filter">
-                            <p>Фильтры</p>
-                        </div>
-                    </div>
-                    <div class="filter-item">
-                        <div>
-                            <img class="image-filter fix-sort" src="{% static 'img/filters/sort_by.svg' %}" alt="">
-                        </div>
-                        <div class="text-filter">
-                            <p>Сортировка</p>
-                        </div>
-                    </div>
-                    <div class="filter-item">
-                        <div>
-                            <img class="image-filter" src="{% static 'img/filters/my_task.svg' %}" alt="">
-                        </div>
-                        <div class="text-filter">
-                            <p>Мои задачи</p>
-                        </div>
-                    </div>
-                    <div class="filter-item">
-                        <div>
-                            <img class="image-filter" src="{% static 'img/filters/show.svg' %}" alt="">
-                        </div>
-                        <div class="text-filter">
-                            <p>Показать</p>
-                        </div>
-                    </div>
-                </div>
+{#                <div class="block-with-list-filters">#}
+{#                    <div class="filter-item">#}
+{#                        <div>#}
+{#                            <img class="image-filter" src="{% static 'img/filters/filters.svg' %}" alt="">#}
+{#                        </div>#}
+{#                        <div class="text-filter">#}
+{#                            <p>Фильтры</p>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="filter-item">#}
+{#                        <div>#}
+{#                            <img class="image-filter fix-sort" src="{% static 'img/filters/sort_by.svg' %}" alt="">#}
+{#                        </div>#}
+{#                        <div class="text-filter">#}
+{#                            <p>Сортировка</p>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="filter-item">#}
+{#                        <div>#}
+{#                            <img class="image-filter" src="{% static 'img/filters/my_task.svg' %}" alt="">#}
+{#                        </div>#}
+{#                        <div class="text-filter">#}
+{#                            <p>Мои задачи</p>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="filter-item">#}
+{#                        <div>#}
+{#                            <img class="image-filter" src="{% static 'img/filters/show.svg' %}" alt="">#}
+{#                        </div>#}
+{#                        <div class="text-filter">#}
+{#                            <p>Показать</p>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
             </div>
             <div class="scroll-container">
                 <div class="scroll-content" id="scroll-container">
@@ -806,7 +902,7 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>
+                            </form></div>
                         </div>
                         <div class="container-column">
                             {% for dashboard in status %}
@@ -892,16 +988,100 @@
                                                                     <img src="{{ item.user.avatar.url }}" alt="">
                                                                 </div>
                                                             {% endfor %}
-{#                                                                <div>#}
-{#                                                                    <img src="{% static 'img/modal/add_people.svg' %}"#}
-{#                                                                         alt="">#}
-{#                                                                </div>#}
                                                             </div>
-                                                            <div class="menu-info-modal">
+                                                            <div class="menu-info-modal"  onclick="toggle_actions({{ task.id }})">
                                                                 <div class="circle"></div>
                                                                 <div class="circle"></div>
                                                                 <div class="circle"></div>
                                                             </div>
+                                                            <ul class="actions_task" id="actions_task_{{ task.id }}">
+                                                                <li onclick="delete_task({{ task.id }})">Удалить</li>
+                                                                <li onclick="show_members_task({{ task.id }})">Список участников</li>
+                                                            </ul>
+
+                                                            <script>
+                                                                function show_members_task(task_id) {
+                                                                    let popup = document.getElementById(`members_task_${task_id}`);
+                                                                    popup.style.display = "block";
+                                                                }
+
+                                                                function close_members_task(task_id) {
+                                                                    let popup = document.getElementById(`members_task_${task_id}`);
+                                                                    popup.style.display = "none";
+                                                                }
+                                                            </script>
+                                                            <div id="members_task_{{ task.id }}" class="popup members-task">
+                                                                <div class="close_members">
+                                                                    <img onclick="close_members_task({{ task.id }})" src="{% static 'img/modal/close.svg' %}" alt="x">
+                                                                </div>
+                                                                <div class="list-members">
+                                                                    <div class="text-members">
+                                                                        <h1>Список участников: </h1>
+                                                                    </div>
+                                                                    {% for item in task.members %}
+                                                                        <div class="item-member joined" id="member_task_{{ item.user.id }}">
+                                                                            <div class="name-member">
+                                                                                <img class="img-member" src="{{ item.user.avatar.url }}" alt="a">
+                                                                                {{ item.user.last_name }} {{ item.user.first_name }}
+                                                                            </div>
+                                                                            <div class="delete_member">
+                                                                                <button class="remove-user" onclick="remove_from_task({{ task.id }}, {{ item.user.id }})">Удалить</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+
+                                                            <script>
+                                                                function toggle_actions(task_id) {
+                                                                    const dropdown = document.getElementById(`actions_task_${task_id}`);
+                                                                    if (dropdown.style.display === "block") {
+                                                                        dropdown.style.display = "none";
+                                                                    } else {
+                                                                        dropdown.style.display = "block";
+                                                                    }
+                                                                }
+
+                                                                function remove_from_task(task_id, member_id) {
+                                                                    $.ajax({
+                                                                        type: "POST",
+                                                                        url: `{% url 'delete_member' 0 %}`.replace(0, task_id),
+                                                                        data: JSON.stringify({
+                                                                            member_id: member_id,
+                                                                            project_id: {{project.id}}
+                                                                        }),
+                                                                        contentType: "application/json",
+                                                                        dataType: "json",
+                                                                        success: function (response) {
+                                                                            $(`#member_task_${member_id}`).remove();
+                                                                        },
+                                                                        error: function (response) {
+                                                                            console.log(response);
+                                                                        }
+                                                                     });
+                                                                    return false;
+                                                                }
+
+                                                                function delete_task(task_id) {
+                                                                    $.ajax({
+                                                                        type: "POST",
+                                                                        url: `{% url 'delete_task' 0 %}`.replace(0, task_id),
+                                                                        data: JSON.stringify({
+                                                                            project_id: {{ project.id }}
+                                                                        }),
+                                                                        contentType: "application/json",
+                                                                        dataType: "json",
+                                                                        success: function (response) {
+                                                                            $(`#block_task_${task_id}`).remove();
+                                                                            console.log(response);
+                                                                        },
+                                                                        error: function (response) {
+                                                                            console.log(response);
+                                                                        }
+                                                                     });
+                                                                    return false;
+                                                                }
+                                                            </script>
                                                         </div>
                                                         <div class="right-line-info-modal">
                                                             <div class="date-create">

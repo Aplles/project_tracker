@@ -9,6 +9,8 @@ from service_objects.services import ServiceOutcome
 
 from api.services.task.change import TaskChangeService
 from api.services.task.create import TaskCreateService
+from api.services.task.delete import TaskDeleteService
+from api.services.task.remove_member import TaskMemberDeleteService
 
 
 class TaskCreateView(View):
@@ -23,8 +25,24 @@ class TaskCreateView(View):
 
 
 class TaskChangeView(APIView):
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
-        outcome = ServiceOutcome(TaskChangeService, request.data | kwargs)
+        ServiceOutcome(TaskChangeService, request.data | kwargs)
+        return Response({})
+
+
+class TaskDeleteView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        ServiceOutcome(TaskDeleteService, request.data | kwargs | {"user": request.user})
+        return Response({})
+
+
+class TaskMemberDeleteView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        ServiceOutcome(TaskMemberDeleteService, request.data | kwargs | {"user": request.user})
         return Response({})

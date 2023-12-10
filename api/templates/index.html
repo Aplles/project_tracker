@@ -44,12 +44,11 @@
                 <div class="header-item title">
                     <h1 class="link_header">ProjectTracker</h1>
                 </div>
-                <div class="header-item">
-                    <button class="btn_custom">Функции</button>
-                </div>
-                <div class="header-item">
-                    <button class="btn_custom create-project">Создать проект</button>
-                </div>
+                <a href="#functions">
+                    <div class="header-item">
+                        <button class="btn_custom">Функции</button>
+                    </div>
+                </a>
                 {% if user.is_authenticated %}
                     <div class="header-item push-right">
                         <a href="{% url 'logout' %}">
@@ -79,9 +78,11 @@
                             Реализуйте свой первый проект, даже если<br> ваша команда рассеяна по всему миру
                         </p>
                     </div>
-                    <div>
-                        <button class="btn_custom btn_red">Создать проект</button>
-                    </div>
+                    <a href="{% url 'home' %}">
+                        <div>
+                            <button class="btn_custom btn_red">Создать проект</button>
+                        </div>
+                    </a>
                 </div>
                 <div class="header-image">
                     <img src="{% static 'img/new_logo.svg' %}" alt="">
@@ -110,7 +111,7 @@
             </div>
         </div>
     </div>
-    <div class="main-container">
+    <div class="main-container" id="functions">
         <div class="title-project">
             <h1 class="title-text">Наши функции</h1>
         </div>

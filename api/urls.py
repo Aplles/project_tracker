@@ -1,12 +1,12 @@
 from django.urls import path
 
 from api.views.dashboard import DashboardCreateView
-from api.views.main import IndexPageView, HomePageView
+from api.views.main import IndexPageView, HomePageView, InviteView
 from api.views.project import UserProjectListView, ProjectPageView, ProjectCreateView
 from api.views.subtask import SubTaskCreateView
-from api.views.task import TaskCreateView, TaskChangeView
+from api.views.task import TaskCreateView, TaskChangeView, TaskDeleteView, TaskMemberDeleteView
 from api.views.timer import TimerStartView, TimerEndView
-from api.views.user import logout_user, UserAuthView
+from api.views.user import logout_user, UserAuthView, UserRemoveView
 
 urlpatterns = [
     # Project
@@ -29,4 +29,14 @@ urlpatterns = [
     # Auth
     path("user/logout/", logout_user, name="logout"),
     path("user/auth/", UserAuthView.as_view(), name="auth"),
+
+    # Invite
+    path("project/link/invite/<uuid:id>/", InviteView.as_view(), name='invite_project'),
+
+    # Task
+    path("tasks/<int:id>/delete/", TaskDeleteView.as_view(), name="delete_task"),
+    path("tasks/<int:id>/members/delete/", TaskMemberDeleteView.as_view(), name="delete_member"),
+
+    # UserProject
+    path("project/<int:id>/members/<int:user_id>/remove/", UserRemoveView.as_view(), name='remove_user')
 ]

@@ -14,9 +14,11 @@ from models_app.models import UserProject, Dashboard, Project
 
 
 class UserProjectListView(ListAPIView):
-    queryset = UserProject.objects.all()
     serializer_class = UserProjectListSerializer
     permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return UserProject.objects.filter(user=self.request.user)
 
 
 class ProjectPageView(View):

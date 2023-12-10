@@ -15,6 +15,7 @@ class User(AbstractUser):
     ]
     email = models.EmailField(unique=True, verbose_name='Почта')
     avatar = models.ImageField(upload_to='users/', verbose_name='Фото профиля')
+    role = models.CharField(max_length=50, choices=TYPE, default=programmer)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
 

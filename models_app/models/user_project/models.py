@@ -18,6 +18,9 @@ class UserProject(models.Model):
         verbose_name='Проект'
     )
 
+    def count_tasks(self):
+        return self.user.tasks_user.filter(task__project=self.project).count()
+
     def __str__(self):
         return f'Проект: {self.project}, Пользователь: {self.user}'
 
