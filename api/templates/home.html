@@ -99,6 +99,8 @@
             }
         }
 
+
+
         function getCurrentDate() {
             const now = new Date();
             const day = now.getDate().toString().padStart(2, '0');
@@ -219,7 +221,7 @@
 
             function updateTimer(timer, reload=false) {
                 const timerId = $(timer).data("timer-id");
-                const timerData = JSON.parse(localStorage.getItem(`timer_${timerId}`)) || {
+                const timerData = JSON.parse(localStorage.getItem(`project_{{ project.id }}_timer_${timerId}`)) || {
                     hours: 0,
                     minutes: 0,
                     seconds: 0,
@@ -238,13 +240,13 @@
                 }
                 const formattedTime = `${timerData.hours.toString().padStart(2, "0")}:${timerData.minutes.toString().padStart(2, "0")}:${timerData.seconds.toString().padStart(2, "0")}`;
                 $(timer).text(formattedTime);
-                localStorage.setItem(`timer_${timerId}`, JSON.stringify(timerData));
+                localStorage.setItem(`project_{{ project.id }}_timer_${timerId}`, JSON.stringify(timerData));
             }
 
             // Загрузить состояние таймеров из localStorage при загрузке страницы
             $(".timer-task").each(function () {
                 const timerId = $(this).data("timer-id");
-                const intervalId = localStorage.getItem(`timer_interval_${timerId}`);
+                const intervalId = localStorage.getItem(`project_{{ project.id }}_timer_interval_${timerId}`);
 
                 if (intervalId) {
                     let image = $(`.start-button[data-timer-id="${timerId}"]`);
@@ -256,22 +258,87 @@
                 }
             });
 
+            function formatDate(inputDate) {
+              const months = [
+                'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+                'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+              ];
+
+              const date = new Date(inputDate);
+
+              const day = date.getDate();
+              const month = months[date.getMonth()];
+              const hours = ('0' + date.getHours()).slice(-2);
+              const minutes = ('0' + date.getMinutes()).slice(-2);
+
+              return `${day} ${month} ${hours}:${minutes}`;
+            }
+
             // Обработчик события для кнопок "Start"
             $(".start-button").on("click", function () {
                 const timerId = $(this).data("timer-id");
                 const timer = $(`.timer-task[data-timer-id="${timerId}"]`);
-
                 let image = $(`.start-button[data-timer-id="${timerId}"]`);
                 if ($(image).attr('src') === "{% static 'img/modal/start_time.svg' %}"){
-                    $(image).attr('src', '{% static 'img/modal/pause_time.svg' %}')
-                    startTimer(timer, timerId);
+                    {#startTimer(timer, timerId);#}
+                    {# Кинуть запрос на создание записи #}
+                    $.ajax({
+                        type: "POST",
+                        url: `{% url 'task_timer_start' 0 %}`.replace(0, timerId),
+                        data: JSON.stringify({}),
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function (response) {
+                            const formattedDate = formatDate(response.created_at);
+                            $(`#messages_task_${timerId}`).append(`
+                                <div class="block-message">
+                                    <p class="text-message">${response.text} ${formattedDate}</p>
+                                </div>`
+                            )
+                            $(image).attr('src', '{% static 'img/modal/pause_time.svg' %}')
+                            startTimer(timer, timerId);
+                        },
+                        error: function (response) {
+                            console.log(response);
+                        }
+                    });
+                    return false;
                 }
-                 else {
+                else {
                     $(image).attr('src', '{% static 'img/modal/start_time.svg' %}')
-                    const intervalId = localStorage.getItem(`timer_interval_${timerId}`);
+                    const intervalId = localStorage.getItem(`project_{{ project.id }}_timer_interval_${timerId}`);
                     if (intervalId) {
                         clearInterval(parseInt(intervalId, 10));
-                        localStorage.removeItem(`timer_interval_${timerId}`);
+                        localStorage.removeItem(`project_{{ project.id }}_timer_interval_${timerId}`);
+
+                        {# Кинуть запрос на изменение записи #}
+                        $.ajax({
+                            type: "POST",
+                            url: `{% url 'task_timer_end' 0 %}`.replace(0, timerId),
+                            data: JSON.stringify({}),
+                            contentType: "application/json",
+                            dataType: "json",
+                            success: function (response) {
+                                const formattedDate = formatDate(response.created_at);
+                                $(`#messages_task_${timerId}`).append(`
+                                    <div class="block-message">
+                                        <p class="text-message">${response.text} ${formattedDate}</p>
+                                    </div>`
+                                )
+                            },
+                            error: function (response) {
+                                console.log(response);
+                            }
+                        });
+
+                        const timerData = {
+                            hours: 0,
+                            minutes: 0,
+                            seconds: 0,
+                        };
+                        console.log(timerId)
+                        localStorage.setItem(`project_{{ project.id }}_timer_${timerId}`, JSON.stringify(timerData));
+                        timer.text("00:00:00");
                     }
                 }
             });
@@ -281,7 +348,7 @@
                     updateTimer(timer);
                 }, 1000);
                 updateTimer(timer);
-                localStorage.setItem(`timer_interval_${timerId}`, interval);
+                localStorage.setItem(`project_{{ project.id }}_timer_interval_${timerId}`, interval);
             }
 
             const scrollContainer = document.getElementById('scroll-container');
@@ -946,10 +1013,10 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="block-chat-modal">
+                                                        <div class="block-chat-modal" id="messages_task_{{ task.id }}">
                                                             {% for comment in task.comments_task.all %}
                                                                 <div class="block-message">
-                                                                    <p class="text-message">{{ comment.text }}</p>
+                                                                    <p class="text-message">{{ comment.text }} {{ comment.created_at|date:"d E H:i" }}</p>
                                                                 </div>
                                                             {% endfor %}
                                                         </div>

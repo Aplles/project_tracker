@@ -15,7 +15,7 @@ class Timer(models.Model):
         null=True,
         blank=True
     )
-    result_time = models.DateTimeField(
+    result_time = models.DurationField(
         verbose_name="Время затраченное на задачу",
         null=True,
         blank=True
