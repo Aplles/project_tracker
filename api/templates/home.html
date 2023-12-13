@@ -751,9 +751,9 @@
                 <div class="scroll-content" id="scroll-container">
                     <div class="content">
                         <div class="toolbar">
-                            <div class="timer">
-                                <img src="{% static 'img/timer.svg' %}" alt="">
-                            </div>
+{#                            <div class="timer">#}
+{#                                <img src="{% static 'img/timer.svg' %}" alt="">#}
+{#                            </div>#}
                             <div class="create_task" onclick="swipe_modal_create_task()">
                                 <div class="plus">
                                     <p>+</p>
@@ -929,20 +929,20 @@
                                                     <img src="{% static 'img/arrow_url.svg' %}" alt="">
                                                 </div>
                                                 <div class="item-url">
-                                                    <p>{{ project.name }}</p>
+                                                    <p>{{ project.name|slice:":8" }}..</p>
                                                 </div>
                                                 <div class="item-url">
                                                     <img src="{% static 'img/arrow_url.svg' %}" alt="">
                                                 </div>
                                                 <div class="item-url">
-                                                    <p>{{ dashboard.status }}</p>
+                                                    <p>{{ dashboard.status|slice:":8" }}..</p>
                                                 </div>
                                                 <div style="background-color: {{ dashboard.color }};"
                                                      class="item-url color-item"></div>
                                             </div>
                                             <div class="line-task">
                                                 <div class="title-task">
-                                                    <p>{{ task.title }}</p>
+                                                    <p>{{ task.title|slice:":30" }}..</p>
                                                 </div>
                                                 <div class="avatar-user-container">
                                                     {% for item in task.tasks_task.all %}

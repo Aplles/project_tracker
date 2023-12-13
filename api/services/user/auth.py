@@ -2,7 +2,7 @@ from functools import lru_cache
 
 from django import forms
 from django.contrib.auth import authenticate
-from rest_framework_simplejwt.tokens import Token
+from rest_framework.authtoken.models import Token
 from service_objects.services import ServiceWithResult
 
 from models_app.models import User
