@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from service_objects.services import ServiceOutcome
 
+from api.services.task.append_member import TaskMemberAppendService
 from api.services.task.change import TaskChangeService
 from api.services.task.create import TaskCreateService
 from api.services.task.delete import TaskDeleteService
@@ -45,4 +46,12 @@ class TaskMemberDeleteView(APIView):
 
     def post(self, request, *args, **kwargs):
         ServiceOutcome(TaskMemberDeleteService, request.data | kwargs | {"user": request.user})
+        return Response({})
+
+
+class TaskMemberAppendView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        ServiceOutcome(TaskMemberAppendService, request.data | kwargs | {"user": request.user})
         return Response({})

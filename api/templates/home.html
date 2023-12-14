@@ -553,7 +553,11 @@
                     <div class="item-member" id="member_{{ item.user.id }}">
                         <div class="left-block-member">
                             <div class="name-member">
-                                <img class="img-member" src="{{ item.user.avatar.url }}" alt="a">
+                                {% if item.user.avatar %}
+                                    <img class="img-member" src="{{ item.user.avatar.url }}" alt="a">
+                                {% else %}
+                                    <img class="img-member" src="{% static 'img/default.jpg' %}" alt="a">
+                                {% endif %}
                                 {{ item.user.last_name }} {{ item.user.first_name }}
                             </div>
                             <div class="count_task">
@@ -1021,14 +1025,36 @@
                                                                     {% for item in task.members %}
                                                                         <div class="item-member joined" id="member_task_{{ item.user.id }}">
                                                                             <div class="name-member">
-                                                                                <img class="img-member" src="{{ item.user.avatar.url }}" alt="a">
+                                                                                {% if item.user.avatar %}
+                                                                                    <img class="img-member" src="{{ item.user.avatar.url }}" alt="a">
+                                                                                {% else %}
+                                                                                    <img class="img-member" src="{% static 'img/default.jpg' %}" alt="a">
+                                                                                {% endif %}
+
                                                                                 {{ item.user.last_name }} {{ item.user.first_name }}
                                                                             </div>
-                                                                            <div class="delete_member">
+                                                                            <div class="delete_member" id="button_action_{{ item.user.id }}_{{ task.id }}">
                                                                                 <button class="remove-user" onclick="remove_from_task({{ task.id }}, {{ item.user.id }})">Удалить</button>
                                                                             </div>
                                                                         </div>
                                                                     {% endfor %}
+
+                                                                    {% for user in task.allowed_members %}
+                                                                        <div class="item-member joined" id="member_task_{{ user.id }}">
+                                                                            <div class="name-member">
+                                                                                {% if user.avatar %}
+                                                                                    <img class="img-member" src="{{ user.avatar.url }}" alt="a">
+                                                                                {% else %}
+                                                                                    <img class="img-member" src="{% static 'img/default.jpg' %}" alt="a">
+                                                                                {% endif %}
+                                                                                {{ user.last_name }} {{ user.first_name }}
+                                                                            </div>
+                                                                            <div class="delete_member" id="button_action_{{ user.id }}_{{ task.id }}">
+                                                                                <button class="append-user" onclick="append_to_task({{ task.id }}, {{ user.id }})">Пригласить</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    {% endfor %}
+
                                                                 </div>
                                                             </div>
 
@@ -1042,6 +1068,30 @@
                                                                     }
                                                                 }
 
+                                                                function append_to_task(task_id, member_id) {
+                                                                    $.ajax({
+                                                                        type: "POST",
+                                                                        url: `{% url 'append_member' 0 %}`.replace(0, task_id),
+                                                                        data: JSON.stringify({
+                                                                            member_id: member_id,
+                                                                            project_id: {{project.id}}
+                                                                        }),
+                                                                        contentType: "application/json",
+                                                                        dataType: "json",
+                                                                        success: function (response) {
+                                                                            let action = $(`#button_action_${member_id}_${task_id}`);
+                                                                            console.log("append", member_id, task_id)
+                                                                            console.log(action)
+                                                                            action.empty();
+                                                                            action.append(`<button class="remove-user" onclick="remove_from_task(${task_id}, ${member_id})">Удалить</button>`);
+                                                                        },
+                                                                        error: function (response) {
+                                                                            console.log(response);
+                                                                        }
+                                                                     });
+                                                                    return false;
+                                                                }
+
                                                                 function remove_from_task(task_id, member_id) {
                                                                     $.ajax({
                                                                         type: "POST",
@@ -1053,7 +1103,11 @@
                                                                         contentType: "application/json",
                                                                         dataType: "json",
                                                                         success: function (response) {
-                                                                            $(`#member_task_${member_id}`).remove();
+                                                                            let action = $(`#button_action_${member_id}_${task_id}`);
+                                                                            console.log("remove", member_id, task_id)
+                                                                            console.log(action)
+                                                                            action.empty();
+                                                                            action.append(`<button class="append-user" onclick="append_to_task(${task_id}, ${member_id})">Пригласить</button>`);
                                                                         },
                                                                         error: function (response) {
                                                                             console.log(response);

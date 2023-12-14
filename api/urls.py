@@ -4,7 +4,7 @@ from api.views.dashboard import DashboardCreateView
 from api.views.main import IndexPageView, HomePageView, InviteView
 from api.views.project import UserProjectListView, ProjectPageView, ProjectCreateView
 from api.views.subtask import SubTaskCreateView
-from api.views.task import TaskCreateView, TaskChangeView, TaskDeleteView, TaskMemberDeleteView
+from api.views.task import TaskCreateView, TaskChangeView, TaskDeleteView, TaskMemberDeleteView, TaskMemberAppendView
 from api.views.timer import TimerStartView, TimerEndView
 from api.views.user import logout_user, UserAuthView, UserRemoveView
 
@@ -36,6 +36,7 @@ urlpatterns = [
     # Task
     path("tasks/<int:id>/delete/", TaskDeleteView.as_view(), name="delete_task"),
     path("tasks/<int:id>/members/delete/", TaskMemberDeleteView.as_view(), name="delete_member"),
+    path("tasks/<int:id>/members/append/", TaskMemberAppendView.as_view(), name="append_member"),
 
     # UserProject
     path("project/<int:id>/members/<int:user_id>/remove/", UserRemoveView.as_view(), name='remove_user')

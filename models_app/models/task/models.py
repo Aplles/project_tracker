@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 from django.db import models
+from models_app.models import TaskUser, UserProject
 
 
 class Task(models.Model):
@@ -33,6 +34,11 @@ class Task(models.Model):
 
     def members(self):
         return self.tasks_task.all()
+
+    def allowed_members(self):
+        users_in_task = [task_user.user for task_user in self.tasks_task.all()]
+        users_in_project = [user_project.user for user_project in UserProject.objects.filter(project=self.project)]
+        return [user_project for user_project in users_in_project if user_project not in users_in_task]
 
     def __str__(self):
         return f'{self.project} - {self.title}'

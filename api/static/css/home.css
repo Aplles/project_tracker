@@ -69,7 +69,7 @@ input {
 }
 
 .all-task {
-    margin: auto 0 auto 25px;
+    margin: auto 0 auto 50px;
 }
 
 .line {
@@ -479,7 +479,6 @@ input {
     height: 40px;
     border-radius: 10px;
     background: #F22;
-    margin-left: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -651,6 +650,7 @@ input {
     align-items: center;
     margin-right: 10px;
     margin-left: auto;
+    height: 100%;
 }
 
 .circle {
@@ -1273,6 +1273,7 @@ input[type="number"] {
     height: 660px;
     top: 50%;
     width: 800px !important;
+    overflow: auto;
 }
 
 .close_members {
@@ -1289,7 +1290,6 @@ input[type="number"] {
     align-items: center;
     margin: 20px 30px;
     border-bottom: 1px solid #b0b0b0;
-
     color: #515151;
     font-size: 17px;
     font-style: normal;
@@ -1303,6 +1303,7 @@ input[type="number"] {
     line-height: 25px;
     border-radius: 50%;
     margin-right: 10px;
+    overflow: hidden;
 }
 
 .name-member {
@@ -1344,6 +1345,13 @@ input[type="number"] {
 .remove-user {
     color: white;
     background-color: #F00;
+    border-radius: 7px;
+    padding: 4px 10px;
+}
+
+.append-user {
+    color: white;
+    background-color: #139d00;
     border-radius: 7px;
     padding: 4px 10px;
 }
