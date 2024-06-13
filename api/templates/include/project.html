@@ -1,9 +1,18 @@
 {% load static %}
+
 <div class="project-item"  id="{{ id }}">
     <div class="image-container">
         <img class="image-project" src="{{ img }}" alt="">
     </div>
     <div class="text-container">
         <p><a href="{{ url }}">{{ title }}</a></p>
+    </div>
+    <div class="delete_project">
+        <form action="/project/{{ id }}/delete/" method="post">
+            {% csrf_token %}
+            <button class="button_delete_project">
+                x
+            </button>
+        </form>
     </div>
 </div>

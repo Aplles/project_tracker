@@ -1409,3 +1409,75 @@ input[type="number"] {
 .joined {
     padding-bottom: 10px;
 }
+
+.div-my_task {
+    margin-left: 5px;
+    margin-top: 3px;
+}
+
+.checkbox_my_task {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background-color: #fff;
+    border: 1px solid #999;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+}
+
+.checkbox_my_task:checked {
+    background-color: #F00;
+    border-color: #F00;
+}
+
+.checkbox_my_task::after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox_my_task:checked::after {
+    display: block;
+}
+
+.approve-filter {
+    background-color: unset;
+    color: #444;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.approve-filter:hover {
+    color: black;
+}
+
+.project-item:hover {
+    .delete_project{
+        display: block;
+    }
+    cursor: pointer;
+}
+
+.delete_project {
+    margin-left: auto;
+    margin-right: 30px;
+    display: none;
+}
+
+.button_delete_project {
+    font-size: 16px;
+    background-color: unset;
+    color: #DA180B;
+}
