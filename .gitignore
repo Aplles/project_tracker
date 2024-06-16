@@ -8,3 +8,4 @@ logs
 public
 .mypy_cache
 uploads
+venv/
