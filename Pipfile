@@ -13,6 +13,7 @@ pillow = "*"
 pipenv = "*"
 djangorestframework = "==3.13.1"
 gunicorn = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
