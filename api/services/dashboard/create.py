@@ -14,6 +14,8 @@ class DashboardCreateService(ServiceWithResult):
     status = forms.CharField()
     color = forms.CharField()
 
+    custom_validations = ["check_project"]
+
     def process(self):
         self.run_custom_validations()
         self._create()
@@ -39,8 +41,8 @@ class DashboardCreateService(ServiceWithResult):
     def _position(self):
         dashboards = Dashboard.objects.filter(project=self._project)
         if dashboards:
-            return dashboards.last().position
-        return 0
+            return dashboards.last().position + 1
+        return 1
 
     def check_project(self):
         if not self._project:

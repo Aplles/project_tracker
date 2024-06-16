@@ -16,6 +16,6 @@ class TimerAdmin(admin.ModelAdmin):
         'id',
         'result_time',
     )
-    readonly_fields = ['id', 'result_time', 'start_time', 'end_time']
+    readonly_fields = ['id', ]
     ordering = ('id', 'task_user')
     list_filter = ('task_user', )

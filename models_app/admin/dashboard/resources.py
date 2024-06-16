@@ -8,8 +8,13 @@ class DashboardAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         'status',
+        'project',
+        'position',
     ]
     list_display_links = (
         'id',
+    )
+    readonly_fields = (
+        'position',
     )
     ordering = ('id', 'status',)

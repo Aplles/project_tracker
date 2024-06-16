@@ -83,6 +83,11 @@ input {
     margin-right: 8px !important;
 }
 
+.icon-header img {
+    width: 15px;
+    height: 15px;
+}
+
 .share {
     display: inline-flex;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -331,12 +336,30 @@ input {
     border: 2px solid #FFF;
     background: #FFF;
     height: 60px;
-
     display: flex;
     justify-content: space-between;
     padding: 0 20px;
     align-items: center;
     margin-bottom: 30px;
+}
+
+.swipe-status-block {
+    height: 20px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    margin-bottom: 5px;
+    /*pointer-events: none;*/
+}
+
+.arrow-status {
+    background-color: unset;
+}
+
+.block-status-task:hover {
+    .swipe-status-block {
+        opacity: 1;
+    }
 }
 
 .title-status {
@@ -458,7 +481,7 @@ input {
     flex-grow: 1;
     display: flex;
     align-items: stretch;
-    margin: 30px 0;
+    margin: 30px 0 15px 0;
 }
 
 .timer {
@@ -1199,6 +1222,10 @@ input[type="number"] {
     margin-right: 10px;
 }
 
+.block-add-status {
+    margin-top: 25px;
+}
+
 .block-add-status:hover {
     background-color: rgba(255, 0, 0, 0.10);
     cursor: pointer;
@@ -1219,8 +1246,8 @@ input[type="number"] {
 
 #primary_color {
     border-radius: 50%;
-    height: 60px !important;
-    width: 60px !important;
+    height: 100% !important;
+    width: 100% !important;
     outline: none;
 }
 
@@ -1247,6 +1274,10 @@ input[type="number"] {
     width: 100%;
     height: 30px;
     border-radius: 22px;
+}
+
+.text-alarm {
+    font-size: 24px !important;
 }
 
 .popup {
@@ -1464,9 +1495,10 @@ input[type="number"] {
 }
 
 .project-item:hover {
-    .delete_project{
+    .delete_project {
         display: block;
     }
+
     cursor: pointer;
 }
 
@@ -1480,4 +1512,53 @@ input[type="number"] {
     font-size: 16px;
     background-color: unset;
     color: #DA180B;
+}
+
+
+.project-header {
+    margin-bottom: 30px;
+}
+
+.total-time {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.statistic-content {
+    height: 100%;
+    padding: 30px;
+}
+
+.line-statistic {
+}
+
+.table-container {
+    width: 100%;
+    border: 1px solid #3b3232;
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.table-statistic {
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.table-statistic th, .table-statistic td {
+    vertical-align: middle;
+    padding: 15px;
+}
+
+.table-coloring {
+    background-color: rgba(255, 0, 0, 0.10) !important;
+}
+
+.delimetr-task {
+    background-color: rgba(0,0,0,0.40);
+    height: 40px;
 }

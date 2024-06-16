@@ -499,31 +499,32 @@
             </div>
         </div>
 
-        <div class="align-vertical all-task">
-            <p class="text-header">Все задачи</p>
-        </div>
 
-        <div class="line"></div>
-
-        <div class="flex-block" onclick="show_members()">
-            <div class="icon-header">
-                <img src="{% static 'img/list.svg' %}" alt=""/>
+        {% if project %}
+            <div class="align-vertical all-task">
+                <p class="text-header">Все задачи</p>
             </div>
-            <div>
-                <p class="text-header">Участники</p>
-            </div>
-        </div>
-        <script>
-            function show_members() {
-                let popup = document.getElementById("members");
-                popup.style.display = "block";
-            }
 
-            function close_members() {
-                let popup = document.getElementById("members");
-                popup.style.display = "none";
-            }
-            {% if project %}
+            <div class="line"></div>
+
+            <div class="flex-block" onclick="show_members()">
+                <div class="icon-header">
+                    <img src="{% static 'img/list.svg' %}" alt=""/>
+                </div>
+                <div>
+                    <p class="text-header">Участники</p>
+                </div>
+            </div>
+            <script>
+                function show_members() {
+                    let popup = document.getElementById("members");
+                    popup.style.display = "block";
+                }
+
+                function close_members() {
+                    let popup = document.getElementById("members");
+                    popup.style.display = "none";
+                }
                 function remove_member(member_id) {
                     $.ajax({
                         type: "POST",
@@ -540,59 +541,74 @@
                      });
                     return false;
                 }
-            {% endif %}
-        </script>
-        <div id="members" class="popup">
-            <div class="close_members">
-                <img onclick="close_members()" src="{% static 'img/modal/close.svg' %}" alt="x">
-            </div>
-            <div class="list-members">
-                <div class="text-members">
-                    <h1>Список участников: </h1>
+            </script>
+            <div id="members" class="popup">
+                <div class="close_members">
+                    <img onclick="close_members()" src="{% static 'img/modal/close.svg' %}" alt="x">
                 </div>
-                {% for item in project.users_project.all %}
-                    <div class="item-member" id="member_{{ item.user.id }}">
-                        <div class="left-block-member">
-                            <div class="name-member">
-                                {% if item.user.avatar %}
-                                    <img class="img-member" src="{{ item.user.avatar.url }}" alt="a">
-                                {% else %}
-                                    <img class="img-member" src="{% static 'img/default.jpg' %}" alt="a">
-                                {% endif %}
-                                {{ item.user.last_name }} {{ item.user.first_name }}
-                            </div>
-                            <div class="count_task">
-                                <p>Количество закрепленных задач: {{ item.count_tasks }}</p>
-                            </div>
-                        </div>
-                        <div class="delete_member">
-                            <button class="remove-user" onclick="remove_member({{ item.user.id }})">Удалить</button>
-                        </div>
+                <div class="list-members">
+                    <div class="text-members">
+                        <h1>Список участников: </h1>
                     </div>
-                {% endfor %}
+                    {% for item in project.users_project.all %}
+                        <div class="item-member" id="member_{{ item.user.id }}">
+                            <div class="left-block-member">
+                                <div class="name-member">
+                                    {% if item.user.avatar %}
+                                        <img class="img-member" src="{{ item.user.avatar.url }}" alt="a">
+                                    {% else %}
+                                        <img class="img-member" src="{% static 'img/default.jpg' %}" alt="a">
+                                    {% endif %}
+                                    {{ item.user.last_name }} {{ item.user.first_name }}
+                                </div>
+                                <div class="count_task">
+                                    <p>Количество закрепленных задач: {{ item.count_tasks }}</p>
+                                </div>
+                            </div>
+                            <div class="delete_member">
+                                <button class="remove-user" onclick="remove_member({{ item.user.id }})">Удалить</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
 
-        <div class="line"></div>
+            <div class="line"></div>
 
-        <div class="flex-block">
-            <div class="icon-header">
-                <img src="{% static 'img/board.svg' %}" alt=""/>
+            <div class="flex-block">
+                <div class="icon-header">
+                    <img src="{% static 'img/board.svg' %}" alt=""/>
+                </div>
+                <div>
+                    <a href="{% url 'project_page' project.id %}"><p class="text-header">Доска</p></a>
+                </div>
             </div>
-            <div>
-                <p class="text-header">Доска</p>
+
+            <div class="line"></div>
+
+            <div class="flex-block">
+                <div class="icon-header">
+                    <img src="{% static 'img/statistic.png' %}" alt=""/>
+                </div>
+                <div>
+                    <a href="{% url 'project_statistic' project.id %}"><p class="text-header">Статистика</p></a>
+                </div>
             </div>
-        </div>
 
 
-        <div class="flex-block share">
-            <div class="icon-header">
-                <img src="{% static 'img/share.svg' %}" alt=""/>
+            <div class="flex-block share">
+                <div class="icon-header">
+                    <img src="{% static 'img/share.svg' %}" alt=""/>
+                </div>
+                <div class="share-text" onclick="showPopup()">
+                    <p class="text-header">Поделиться</p>
+                </div>
             </div>
-            <div class="share-text" onclick="showPopup()">
-                <p class="text-header">Поделиться</p>
+        {% else %}
+            <div class="align-vertical all-task">
+                <p class="text-header text-alarm">Выберите проект для продолжения</p>
             </div>
-        </div>
+        {% endif %}
     </div>
     {% if project %}
         <script>
@@ -657,7 +673,7 @@
                             url: "{% url 'list_projects' %}",
                             data: {
                                 search: search_string
-                            }, 
+                            },
                             contentType: "application/json",
                             dataType: "json",
                             success: function (response) {
@@ -821,14 +837,16 @@
 {#                            <div class="timer">#}
 {#                                <img src="{% static 'img/timer.svg' %}" alt="">#}
 {#                            </div>#}
-                            <div class="create_task" onclick="swipe_modal_create_task()">
-                                <div class="plus">
-                                    <p>+</p>
+                            {% if project %}
+                                <div class="create_task" onclick="swipe_modal_create_task()">
+                                    <div class="plus">
+                                        <p>+</p>
+                                    </div>
+                                    <div class="plus_task">
+                                        <p>Задача</p>
+                                    </div>
                                 </div>
-                                <div class="plus_task">
-                                    <p>Задача</p>
-                                </div>
-                            </div>
+                            {% endif %}
                             <div id="myModal_new_task" class="modal">
                                 {% if project %}
                                     <form action="{% url 'create_task' project.id %}" method="post">
@@ -974,6 +992,60 @@
                         <div class="container-column">
                             {% for dashboard in status %}
                                 <div class="column" id="column_{{ dashboard.id }}">
+
+                                    <div class="swipe-status-block">
+                                        {% if forloop.first %}
+                                            <div style="margin-left: auto; margin-right: -30px">
+                                                <form action="{% url 'dashboard_delete' project.id dashboard.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="arrow-status">x</button>
+                                                </form>
+                                            </div>
+                                            <div style="margin-left: auto">
+                                                <form action="{% url 'dashboard_change' project.id dashboard.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="direction" value="right">
+                                                    <button type="submit" class="arrow-status">>>></button>
+                                                </form>
+                                            </div>
+                                        {% elif forloop.last %}
+                                            <div style="margin-right: auto">
+                                                <form action="{% url 'dashboard_change' project.id dashboard.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="direction" value="left">
+                                                    <button type="submit" class="arrow-status"><<<</button>
+                                                </form>
+                                            </div>
+                                            <div style="margin-right: auto; margin-left: -30px">
+                                                <form action="{% url 'dashboard_delete' project.id dashboard.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="arrow-status">x</button>
+                                                </form>
+                                            </div>
+                                        {% else %}
+                                            <div>
+                                                <form action="{% url 'dashboard_change' project.id dashboard.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="direction" value="left">
+                                                    <button type="submit" class="arrow-status"><<<</button>
+                                                </form>
+                                            </div>
+                                            <div>
+                                                <form action="{% url 'dashboard_delete' project.id dashboard.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="arrow-status">x</button>
+                                                </form>
+                                            </div>
+                                            <div>
+                                                <form action="{% url 'dashboard_change' project.id dashboard.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="direction" value="right">
+                                                    <button type="submit" class="arrow-status">>>></button>
+                                                </form>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
                                     <div
                                             class="block-status-task"
                                             style="box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.12), 0 -4px 0 {{ dashboard.color }};"

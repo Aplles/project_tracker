@@ -5,7 +5,7 @@ from django.db import models
 class Dashboard(models.Model):
     """ Модель мониторинга """
     status = models.CharField(max_length=255, verbose_name='Статус (Название колонки)')
-    position = models.PositiveIntegerField(default=0, verbose_name="Позиция")
+    position = models.PositiveIntegerField(default=1, verbose_name="Позиция")
     project = models.ForeignKey(
         'Project',
         on_delete=models.CASCADE,

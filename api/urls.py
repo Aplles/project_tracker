@@ -1,21 +1,53 @@
 from django.urls import path
 
-from api.views.dashboard import DashboardCreateView
-from api.views.main import IndexPageView, HomePageView, InviteView
-from api.views.project import UserProjectListView, ProjectPageView, ProjectCreateView, ProjectDeleteView
+from api.views.dashboard import (
+    DashboardCreateView,
+    DashboardChangeView,
+    DashboardDeleteView
+)
+from api.views.main import (
+    IndexPageView,
+    HomePageView,
+    InviteView
+)
+from api.views.project import (
+    UserProjectListView,
+    ProjectPageView,
+    ProjectCreateView,
+    ProjectDeleteView,
+    ProjectStatisticView
+)
 from api.views.subtask import SubTaskCreateView
-from api.views.task import TaskCreateView, TaskChangeView, TaskDeleteView, TaskMemberDeleteView, TaskMemberAppendView
-from api.views.timer import TimerStartView, TimerEndView
-from api.views.user import logout_user, UserAuthView, UserRemoveView
+from api.views.task import (
+    TaskCreateView,
+    TaskChangeView,
+    TaskDeleteView,
+    TaskMemberDeleteView,
+    TaskMemberAppendView
+)
+from api.views.timer import (
+    TimerStartView,
+    TimerEndView
+)
+from api.views.user import (
+    logout_user,
+    UserAuthView,
+    UserRemoveView
+)
 
 urlpatterns = [
     # Project
     path("user/projects/", UserProjectListView.as_view(), name="list_projects"),
+    path("project/create/", ProjectCreateView.as_view(), name="create_project"),
+
     path("project/<int:id>/subtask/create/", SubTaskCreateView.as_view(), name="create_subtask"),
     path("project/<int:id>/task/change/", TaskChangeView.as_view(), name="change_task"),
     path("project/<int:id>/dashboard/", DashboardCreateView.as_view(), name="create_dashboard"),
-    path("project/create/", ProjectCreateView.as_view(), name="create_project"),
     path("project/<int:id>/delete/", ProjectDeleteView.as_view(), name="project_delete"),
+    path("project/<int:id>/statistic/", ProjectStatisticView.as_view(), name="project_statistic"),
+
+    path("project/<int:project_id>/dashboard/<int:id>/change/", DashboardChangeView.as_view(), name="dashboard_change"),
+    path("project/<int:project_id>/dashboard/<int:id>/delete/", DashboardDeleteView.as_view(), name="dashboard_delete"),
 
     # Page
     path("", IndexPageView.as_view(), name="index"),
