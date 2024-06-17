@@ -9,5 +9,8 @@ public
 .mypy_cache
 uploads
 venv/
-media/
 static/
+
+!/media
+/media/*
+!/media/data/
