@@ -403,6 +403,7 @@
                     "Authorization": "Token {{ user.auth_token.key }}",
                 }
             });
+            console.log(`{{ request.user.auth_token.key }}`);
 
             function get_projects(list_projects) {
                 $.ajax({

@@ -55,5 +55,5 @@ class TaskMemberAppendService(ServiceWithResult):
         if not UserProject.objects.filter(
                 user=self.cleaned_data['user'],
                 project_id=self.cleaned_data['project_id']
-        ) or self.cleaned_data['user'].role != User.manager:
+        ) or self.cleaned_data['user'].role != 'Менеджер':
             raise PermissionDenied("PermissionDenied")
