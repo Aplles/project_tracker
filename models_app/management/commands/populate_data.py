@@ -44,7 +44,7 @@ class Command(BaseCommand):
                 time_per_task=i * 2,
                 status=dashboards[i % len(dashboards)],
                 project=projects[i % len(projects)],
-                author_id=users_id[random.randint(0, len(users_id) - 1)]  # User IDs 1, 2, 7, 8, 9, 10
+                author_id=random.choice(users_id)
             )
             tasks.append(task)
 
