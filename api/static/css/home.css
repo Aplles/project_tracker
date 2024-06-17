@@ -1559,6 +1559,55 @@ input[type="number"] {
 }
 
 .delimetr-task {
-    background-color: rgba(0,0,0,0.40);
+    background-color: rgba(0, 0, 0, 0.40);
     height: 40px;
+}
+
+.btn-home-profile {
+    height: 35px;
+    margin: auto 0 auto 10px;
+    color: white;
+    background-color: #F00;
+    border-radius: 10px;
+    border: none;
+}
+
+.btn-home-profile:hover {
+    color: #ffd1d1;
+}
+
+.btn-home-profile-cancel {
+    height: 35px;
+    margin: auto 10px auto 0;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    background-color: #000000;
+}
+
+.btn-home-profile-cancel:hover {
+    color: #ffffff;
+}
+
+.flex-block-profile div {
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.modal-content-profile {
+    height: auto;
+}
+
+.modal-footer-profile {
+    border-top: unset;
+}
+
+.form-group-profile {
+    width: 300px
+}
+
+.form-control-profile {
+    padding: .375rem 10px;
+    margin-left: -10px;
+    margin-top: 5px;
 }

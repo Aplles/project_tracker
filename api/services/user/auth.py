@@ -44,8 +44,8 @@ class UserAuthService(ServiceWithResult):
                 email=self.cleaned_data.get('login'),
                 username=self.cleaned_data.get('login'),
                 password=self.cleaned_data.get('password_1'),
-                first_name="Максим",
-                last_name="Караичев",
+                first_name="---",
+                last_name="---",
             )
             Token.objects.create(user=user)
             return user
