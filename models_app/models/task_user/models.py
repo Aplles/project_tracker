@@ -26,5 +26,5 @@ class TaskUser(models.Model):
     class Meta:
         db_table = 'tasks_user'
         app_label = 'models_app'
-        verbose_name = 'Задача пользователя'
-        verbose_name_plural = 'Задачи пользователя'
+        verbose_name = 'Пользователи в задаче'
+        verbose_name_plural = 'Пользователи в задаче'

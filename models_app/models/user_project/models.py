@@ -27,5 +27,5 @@ class UserProject(models.Model):
     class Meta:
         db_table = 'user_project'
         app_label = 'models_app'
-        verbose_name = 'Проекты пользователя'
-        verbose_name_plural = 'Проекты пользователей'
+        verbose_name = 'Пользователи проекта'
+        verbose_name_plural = 'Пользователи проекта'

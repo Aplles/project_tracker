@@ -4,8 +4,14 @@ from models_app.models import (
     Task,
     Subtask,
     Document,
-    Comment
+    Comment,
+    TaskUser,
 )
+
+
+class TaskUserInline(admin.TabularInline):
+    model = TaskUser
+    extra = 0
 
 
 class SubTaskInline(admin.TabularInline):
@@ -61,7 +67,12 @@ class TaskAdmin(admin.ModelAdmin):
         'id',
         'title',
     )
-    inlines = (SubTaskInline, DocumentInline, CommentInline)
+    inlines = (
+        TaskUserInline,
+        SubTaskInline,
+        DocumentInline,
+        CommentInline,
+    )
     ordering = ('id', 'time_per_task', 'status', 'project')
     list_filter = ('time_per_task', 'status', 'project')
     readonly_fields = ['id', 'created_at', 'updated_at']

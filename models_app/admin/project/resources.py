@@ -1,10 +1,15 @@
 # -*- coding: utf8 -*-
 from django.contrib import admin
-from models_app.models import Project, Task
+from models_app.models import Project, Task, UserProject
 
 
 class TaskInline(admin.TabularInline):
     model = Task
+    extra = 0
+
+
+class UserProjectInline(admin.TabularInline):
+    model = UserProject
     extra = 0
 
 
@@ -18,6 +23,6 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display_links = (
         'id',
     )
-    readonly_fields = ('uuid', )
-    inlines = (TaskInline,)
+    readonly_fields = ('uuid',)
+    inlines = (UserProjectInline, TaskInline)
     ordering = ('id', 'name',)
