@@ -15,7 +15,7 @@ from service_objects.services import ServiceOutcome
 
 from api.serializers.user_project.list import UserProjectListSerializer
 from api.services.project.create import ProjectCreateService
-from models_app.models import UserProject, Dashboard, Project, TaskUser, Task, Timer
+from models_app.models import UserProject, Dashboard, Project, TaskUser, Task, Timer, User
 
 
 class UserProjectListView(ListAPIView):
@@ -63,7 +63,8 @@ class ProjectPageView(LoginRequiredMixin, View):
             'status': dashboards,
             'project': project,
             'search': search_query,
-            'my_task': my_task
+            'my_task': my_task,
+            'roles': User.TYPE
         })
 
 

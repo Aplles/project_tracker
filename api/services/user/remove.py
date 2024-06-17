@@ -15,6 +15,7 @@ class UserRemoveService(ServiceWithResult):
     custom_validations = ["check_right", "user_presence", "user_project_presence"]
 
     def process(self):
+        self.run_custom_validations()
         self._delete()
         self.remove_from_task()
         return self

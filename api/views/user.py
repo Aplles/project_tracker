@@ -1,4 +1,5 @@
 from django.contrib.auth import logout, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from rest_framework.permissions import IsAuthenticated
 from django.views import View
@@ -8,6 +9,7 @@ from service_objects.errors import ServiceObjectLogicError
 from service_objects.services import ServiceOutcome
 
 from api.services.user.auth import UserAuthService
+from api.services.user.profile import UserProfileService
 from api.services.user.remove import UserRemoveService
 
 
@@ -45,3 +47,10 @@ class UserRemoveView(APIView):
     def post(self, request, *args, **kwargs):
         ServiceOutcome(UserRemoveService, kwargs | {"user": request.user})
         return Response({})
+
+
+class UserProfileView(LoginRequiredMixin, View):
+
+    def post(self, request, *args, **kwargs):
+        ServiceOutcome(UserProfileService, request.POST.dict() | {"user": request.user}, request.FILES)
+        return redirect(request.META.get('HTTP_REFERER', '/'))

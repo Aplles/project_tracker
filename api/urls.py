@@ -32,7 +32,8 @@ from api.views.timer import (
 from api.views.user import (
     logout_user,
     UserAuthView,
-    UserRemoveView
+    UserRemoveView,
+    UserProfileView,
 )
 
 urlpatterns = [
@@ -62,6 +63,7 @@ urlpatterns = [
     # Auth
     path("user/logout/", logout_user, name="logout"),
     path("user/auth/", UserAuthView.as_view(), name="auth"),
+    path("user/profile/", UserProfileView.as_view(), name="profile"),
 
     # Invite
     path("project/link/invite/<uuid:id>/", InviteView.as_view(), name='invite_project'),

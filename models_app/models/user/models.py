@@ -10,8 +10,8 @@ class User(AbstractUser):
     programmer = 'programmer'
 
     TYPE = [
-        (manager, 'Менеджер'),
         (programmer, 'Программист'),
+        (manager, 'Менеджер'),
     ]
     email = models.EmailField(unique=True, verbose_name='Почта')
     avatar = models.ImageField(upload_to='users/', verbose_name='Фото профиля')
