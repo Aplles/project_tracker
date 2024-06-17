@@ -6,10 +6,10 @@ from models_app.models import User
 
 class UserProfileService(ServiceWithResult):
     user = ModelField(User)
-    first_name = forms.CharField()
-    last_name = forms.CharField()
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
     avatar = forms.ImageField(required=False)
-    role = forms.CharField()
+    role = forms.CharField(required=False)
 
     def process(self):
         self._change()
@@ -17,9 +17,13 @@ class UserProfileService(ServiceWithResult):
 
     def _change(self):
         user = self.cleaned_data['user']
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
-        user.avatar = self.cleaned_data['avatar']
-        user.role = self.cleaned_data['role']
+        if self.cleaned_data['first_name']:
+            user.first_name = self.cleaned_data['first_name']
+        if self.cleaned_data['last_name']:
+            user.last_name = self.cleaned_data['last_name']
+        if self.cleaned_data['avatar']:
+            user.avatar = self.cleaned_data['avatar']
+        if self.cleaned_data['role']:
+            user.role = self.cleaned_data['role']
         user.save()
 

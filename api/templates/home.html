@@ -642,22 +642,22 @@
                               <div class="modal-body">
                                 <div class="form-group form-group-profile">
                                     <label for="formGroupExampleInput">Введите имя</label>
-                                    <input type="text" class="form-control form-control-profile" id="formGroupExampleInput10" placeholder="Имя" name="first_name" {% if not request.user.first_name or not request.user.last_name %}required{% endif %}>
+                                    <input type="text" class="form-control form-control-profile" id="formGroupExampleInput10" placeholder="Имя" name="first_name" {% if not request.user.first_name or not request.user.last_name %}required{% else %} value="{{ request.user.first_name }}"{% endif %}>
                                   </div>
                                   <div class="form-group form-group-profile">
                                     <label for="formGroupExampleInput2">Введите фамилию</label>
-                                    <input type="text" class="form-control form-control-profile" id="formGroupExampleInput11" placeholder="Фамилия..." name="last_name" {% if not request.user.first_name or not request.user.last_name %}required{% endif %}>
+                                    <input type="text" class="form-control form-control-profile" id="formGroupExampleInput11" placeholder="Фамилия..." name="last_name" {% if not request.user.first_name or not request.user.last_name %}required{% else %} value="{{ request.user.last_name }}"{% endif %}>
                                   </div>
                                   <div class="form-group form-group-profile">
                                     <label for="formGroupExampleInput2">Загрузите фото</label>
-                                    <input type="file" class="form-control form-control-profile" id="formGroupExampleInput12" placeholder="Фото..." name="avatar" {% if not request.user.first_name or not request.user.last_name %}required{% endif %}>
+                                    <input type="file" class="form-control form-control-profile" id="formGroupExampleInput12" placeholder="Фото..." name="avatar" {% if not request.user.first_name or not request.user.last_name %}required{% else %} value="{{ request.user.avatar }}"{% endif %}>
                                   </div>
 
                                   <div class="form-group form-group-profile">
                                       <label for="inputState2">Выберите вашу роль</label>
                                       <select name="role" id="inputState2" class="form-control form-control-profile">
                                         {% for role in roles %}
-                                            {% if request.user.role == role.0 %}
+                                            {% if request.user.role == role.1 %}
                                                 <option selected>{{ role.1 }}</option>
                                             {% else %}
                                                 <option>{{ role.1 }}</option>
