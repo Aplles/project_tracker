@@ -659,9 +659,9 @@
                                       <select name="role" id="inputState2" class="form-control form-control-profile">
                                         {% for role in roles %}
                                             {% if request.user.role == role.1 %}
-                                                <option selected>{{ role.1 }}</option>
+                                                <option value="{{ role.0 }}" selected>{{ role.1 }}</option>
                                             {% else %}
-                                                <option>{{ role.1 }}</option>
+                                                <option value="{{ role.0 }}">{{ role.1 }}</option>
                                             {% endif %}
                                         {% endfor %}
                                       </select>
@@ -725,9 +725,9 @@
                                       <select name="role" id="inputState1" class="form-control form-control-profile">
                                         {% for role in roles %}
                                             {% if request.user.role == role.0 %}
-                                                <option selected>{{ role.1 }}</option>
+                                                <option value="{{ role.0 }}" selected>{{ role.1 }}</option>
                                             {% else %}
-                                                <option>{{ role.1 }}</option>
+                                                <option value="{{ role.0 }}">{{ role.1 }}</option>
                                             {% endif %}
                                         {% endfor %}
                                       </select>
