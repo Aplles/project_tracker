@@ -1629,3 +1629,7 @@ input[type="number"] {
 #inputState2 {
     width: 322px;
 }
+
+.line-modal-timer {
+    height: 15px;
+}

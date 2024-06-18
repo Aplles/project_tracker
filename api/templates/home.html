@@ -1437,9 +1437,13 @@
                                                                     <div class="text-add-info">
                                                                         <input type="hidden" 
                                                                         id="total_time_project_{{ task.id }}" 
-                                                                        value="{% if task.total_time %}{{ task.total_time|format_duration }}{% else %}00:00:00{% endif %}"
+                                                                        value="00:00:00"
                                                                         >
                                                                         <p class="timer-task" data-timer-id="{{ task.id }}"></p>
+                                                                    </div>
+                                                                    <div class="line line-modal-timer"></div>
+                                                                    <div class="text-add-info">
+                                                                        <p>{{ task.total_time|format_duration }}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
