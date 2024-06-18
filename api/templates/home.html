@@ -658,7 +658,7 @@
                                       <label for="inputState2">Выберите вашу роль</label>
                                       <select name="role" id="inputState2" class="form-control form-control-profile">
                                         {% for role in roles %}
-                                            {% if request.user.role == role.1 %}
+                                            {% if request.user.role == role.0 %}
                                                 <option value="{{ role.0 }}" selected>{{ role.1 }}</option>
                                             {% else %}
                                                 <option value="{{ role.0 }}">{{ role.1 }}</option>
