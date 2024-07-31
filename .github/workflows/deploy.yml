@@ -32,3 +32,4 @@ jobs:
       run: ansible-playbook ./deploy.yml -v -i ${{ secrets.DEPLOYMENT_IP }}, --extra-vars="project=somebody"
       env:
         ANSIBLE_HOST_KEY_CHECKING: 'False'
+        ANSIBLE_REMOTE_USER: 'somebody'
