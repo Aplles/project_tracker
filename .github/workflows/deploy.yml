@@ -23,7 +23,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install ansible
 
+    - name: Add SSH key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
     - name: Run Ansible Playbook
       run: ansible-playbook ./deploy.yml -v -i ${{ secrets.DEPLOYMENT_IP }}, --extra-vars="project=somebody"
       env:
-        ANSIBLE_HOST_KEY_CHECKING: 'False'  # Optional: This disables host key checking.
+        ANSIBLE_HOST_KEY_CHECKING: 'False'
