@@ -18,10 +18,10 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y ansible
 
-    - name: Run Ansible playbook
+    - name: Add SSH key and run Ansible playbook
       run: |
+        eval "$(ssh-agent -s)"
+        ssh-add <(echo "${{ secrets.DEPLOY_SSH_KEY }}")
         ansible-playbook ./deploy.yml -v -i ${{ secrets.DEPLOYMENT_IP }}, --extra-vars "project=somebody"
       env:
         ANSIBLE_HOST_KEY_CHECKING: 'false'
-        ANSIBLE_REMOTE_USER: somebody
-        ANSIBLE_PRIVATE_KEY_FILE: ${{ secrets.DEPLOY_SSH_KEY }}
