@@ -23,10 +23,10 @@ jobs:
         echo "${{ secrets.DEPLOY_SSH_KEY }}" > /tmp/private_key
         chmod 600 /tmp/private_key
 
-        - name: Run Ansible playbook
-          run: |
-            ansible-playbook ./deploy.yml -v -i ${{ secrets.DEPLOYMENT_IP }}, --extra-vars "project=somebody"
-          env:
-            ANSIBLE_HOST_KEY_CHECKING: 'false'
-            ANSIBLE_REMOTE_USER: somebody
-            ANSIBLE_PRIVATE_KEY_FILE: /tmp/private_key
+    - name: Run Ansible playbook
+      run: |
+        ansible-playbook ./deploy.yml -v -i ${{ secrets.DEPLOYMENT_IP }}, --extra-vars "project=somebody"
+      env:
+        ANSIBLE_HOST_KEY_CHECKING: 'false'
+        ANSIBLE_REMOTE_USER: somebody
+        ANSIBLE_PRIVATE_KEY_FILE: /tmp/private_key
