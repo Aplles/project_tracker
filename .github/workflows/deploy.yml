@@ -22,6 +22,6 @@ jobs:
       run: |
         eval "$(ssh-agent -s)"
         ssh-add <(echo "${{ secrets.DEPLOY_SSH_KEY }}")
-        ansible-playbook ./deploy.yml -v -i ${{ secrets.DEPLOYMENT_IP }}, --extra-vars "project=somebody"
+        ansible-playbook ./deploy.yml -v -i ${{ secrets.DEPLOYMENT_IP }}, --extra-vars "project=${{ secrets.PROJECT_USER }}"
       env:
         ANSIBLE_HOST_KEY_CHECKING: 'false'
